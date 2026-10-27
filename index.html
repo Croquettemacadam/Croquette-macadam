@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Croquette &amp; Macadam – Les compagnons des personnes à la rue, à Bordeaux</title>
+  <meta name="description" content="Association bordelaise : croquettes, matériel et soins vétérinaires pour les animaux des personnes sans domicile.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <header id="site-header"></header>
+
+  <main id="contenu">
+    <section class="hero" id="accueil" data-bg="hero.background">
+      <div class="wrap hero-in">
+        <p class="kicker" data-c="hero.kicker"></p>
+        <h1 data-c="hero.title"></h1>
+        <p class="lead" data-c="hero.text"></p>
+        <div class="cta">
+          <a class="btn" data-don>Faire un don</a>
+          <a class="btn btn-ghost" href="#mission">Découvrir notre mission</a>
+        </div>
+      </div>
+      <div data-wave></div>
+    </section>
+
+    <section class="section" id="mission">
+      <div class="wrap split">
+        <div>
+          <p class="kicker" data-c="mission.kicker"></p>
+          <h2 data-c="mission.title"></h2>
+          <div class="prose" data-paras="mission.paragraphs"></div>
+          <div id="video-root"></div>
+        </div>
+        <div data-photos="mission.photos"></div>
+      </div>
+    </section>
+
+    <div data-divider></div>
+
+    <section class="section" id="actions">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker" data-c="actions.kicker"></p>
+          <h2 data-c="actions.title"></h2>
+          <p class="lead" data-c="actions.intro"></p>
+        </div>
+        <div class="cards" id="actions-list"></div>
+      </div>
+    </section>
+
+    <div data-divider></div>
+
+    <section class="section" id="impact">
+      <div class="wrap split">
+        <div>
+          <p class="kicker" data-c="impact.kicker"></p>
+          <h2 data-c="impact.title"></h2>
+          <p class="lead" data-c="impact.intro"></p>
+          <div class="counters" id="impact-counters"></div>
+          <p class="donate-note" data-c="impact.donation"></p>
+          <a class="btn" data-don>Soutenir l'association</a>
+        </div>
+        <div data-photos="impact.photos"></div>
+      </div>
+    </section>
+
+    <div data-divider></div>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker" data-c="contact.kicker"></p>
+          <h2 data-c="contact.title"></h2>
+          <p class="lead" data-c="contact.intro"></p>
+        </div>
+
+        <form class="form" id="contact-form" novalidate>
+          <div class="grid2">
+            <label><span class="req">Nom</span><input name="nom" autocomplete="family-name" required></label>
+            <label><span class="req">Prénom</span><input name="prenom" autocomplete="given-name" required></label>
+          </div>
+          <div class="grid2">
+            <label><span class="req">Adresse e-mail</span><input name="email" type="email" autocomplete="email" required></label>
+            <label>Téléphone (facultatif)<input name="telephone" type="tel" autocomplete="tel"></label>
+          </div>
+          <label><span class="req">Vous êtes</span>
+            <select name="profil" required>
+              <option value="" selected disabled>Choisir…</option>
+              <option>Un particulier</option>
+              <option>Une entreprise</option>
+              <option>Un(e) futur(e) bénévole</option>
+            </select>
+          </label>
+          <label><span class="req">Message</span><textarea name="message" required></textarea></label>
+          <div class="hp" aria-hidden="true"><label>Ne pas remplir<input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <label class="check">
+            <input type="checkbox" name="consentement" required>
+            <span>J'accepte que Croquette &amp; Macadam recueille mes informations dans le but de répondre à ma demande. <span class="req"></span></span>
+          </label>
+          <div><button class="btn" type="submit">Envoyer le message</button></div>
+          <p class="status" id="contact-status" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div data-divider></div>
+  <footer id="site-footer"></footer>
+  <noscript><p style="padding:24px">Ce site nécessite JavaScript pour s'afficher.</p></noscript>
+
+  <script src="js/config.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

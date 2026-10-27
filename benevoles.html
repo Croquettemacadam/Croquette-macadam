@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bénévoles – Croquette &amp; Macadam</title>
+  <meta name="description" content="L'équipe de bénévoles de Croquette & Macadam, nos événements et l'espace d'inscription aux maraudes.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <header id="site-header"></header>
+
+  <main id="contenu">
+    <section class="page-hero">
+      <div class="wrap">
+        <p class="kicker">Bénévoles</p>
+        <h1 data-c="benevoles.title"></h1>
+        <p class="lead" data-c="benevoles.intro"></p>
+        <div class="pills">
+          <a href="#equipe">L'équipe</a>
+          <a href="#forums">Où nous retrouver</a>
+          <a href="#espace">Espace bénévoles</a>
+        </div>
+      </div>
+      <div data-wave></div>
+    </section>
+
+    <section class="section" id="equipe" style="padding-top:24px">
+      <div class="wrap">
+        <div class="section-head"><h2>L'équipe</h2></div>
+        <div class="cards" id="equipe-root"></div>
+      </div>
+    </section>
+
+    <div data-divider></div>
+
+    <section class="section" id="forums">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-c="benevoles.eventsTitle"></h2>
+          <p class="lead" data-c="benevoles.eventsIntro"></p>
+        </div>
+        <div class="cards" id="forums-root"></div>
+      </div>
+    </section>
+
+    <div data-divider></div>
+
+    <section class="section" id="espace">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Réservé aux membres</p>
+          <h2 data-c="benevoles.espaceTitle"></h2>
+          <p class="lead" data-c="benevoles.espaceIntro"></p>
+        </div>
+        <div id="espace-root"></div>
+      </div>
+    </section>
+  </main>
+
+  <div data-divider></div>
+  <footer id="site-footer"></footer>
+  <noscript><p style="padding:24px">Ce site nécessite JavaScript pour s'afficher.</p></noscript>
+
+  <script src="js/config.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/benevoles.js"></script>
+</body>
+</html>
