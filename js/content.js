@@ -17,6 +17,7 @@
      ratio    "4 / 3", "1 / 1", "3 / 4", "16 / 9"...   proportions du cadre (largeur / hauteur)
      focus    "50% 20%"                 partie de la photo à garder (gauche-droite, haut-bas)
      caption  "Texte"                   légende (surtout pour le style polaroid)
+     credit   "Photo par Prénom Nom"    crédit affiché sous les photos de la section (Mission, Impact)
    OPTIONS SUPPLÉMENTAIRES POUR UN COLLAGE (sections Mission et Impact)
      x, y     0 à 100                   position du coin haut-gauche, en % du cadre du collage
      w        10 à 100                  largeur de la photo, en % du cadre du collage
@@ -32,7 +33,7 @@ window.SITE_CONTENT = {
     // (photo large, 1920 px de large, moins de 500 Ko). Sans fichier, un fond clair s'affiche.
     background: "assets/img/hero.jpg",
     kicker: "Association bordelaise, active depuis 2018",
-    title: "Des croquettes, du matériel et des soins pour les compagnons des personnes en grande précarité",
+    title: "Des croquettes, du matériel et des soins pour les compagnons des personnes à la rue",
     text: "À Bordeaux, nous aidons les personnes sans domicile à prendre soin de leur animal : nourriture, équipement, accès au vétérinaire."
   },
 
@@ -41,7 +42,7 @@ window.SITE_CONTENT = {
     title: "Un animal à la rue, c'est un lien qui compte",
     paragraphs: [
       "Pour beaucoup de personnes sans domicile, leur animal est une présence de tous les jours, un soutien et parfois une protection.",
-      "Quand l'argent manque, il faut pourtant choisir entre se nourrir, se soigner soi-même et nourrir ou soigner son compagnon. Nous voulons que ce choix n'ait pas à être fait.",
+      "Quand l'argent manque, il faut pourtant choisir entre se nourrir soi-même et nourrir son compagnon. Nous voulons que ce choix n'ait pas à être fait.",
       "En aidant les animaux, nous préservons aussi la dignité et le lien social de leurs maîtres."
     ],
     // Vidéo YouTube : miniature sous le texte, lecture en grand au clic.
@@ -54,8 +55,7 @@ window.SITE_CONTENT = {
     photosRatio: "1 / 1",
     photos: [
       { src: "assets/img/mission-1.jpg", alt: "Description de la photo 1 (à compléter)", shape: "arch", x: 0, y: 0, w: 60, ratio: "4 / 5", rotate: -2, z: 1 },
-      { src: "assets/img/mission-2.jpg", alt: "Description de la photo 2 (à compléter)", shape: "circle", x: 42, y: 42, w: 58, ratio: "1 / 1", rotate: 0, z: 2,
-      credit: "Photos par Pauline Gobin" }
+      { src: "assets/img/mission-2.jpg", alt: "Description de la photo 2 (à compléter)", shape: "circle", x: 42, y: 42, w: 58, ratio: "1 / 1", rotate: 0, z: 2 }
     ]
   },
 
@@ -116,6 +116,9 @@ window.SITE_CONTENT = {
      la page affiche "bientôt disponible" et les boutons sont désactivés.
      Chaque produit peut avoir sa propre adresse (url), sinon c'est l'adresse de la boutique. */
   shop: {
+    // true = la boutique est visible (menu + page). false = en attente : le lien disparaît du menu
+    // et la page affiche seulement "boutique non disponible". Pour la rouvrir, remets true.
+    visible: false,
     title: "La boutique solidaire",
     intro: "Chaque achat finance les croquettes, le matériel et les soins vétérinaires des compagnons que nous accompagnons.",
     url: "",

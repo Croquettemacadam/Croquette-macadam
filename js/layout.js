@@ -125,7 +125,14 @@
     });
     root.querySelectorAll('[data-photos]').forEach(function (n) {
       var v = get(C, n.dataset.photos);
-      if (Array.isArray(v)) n.innerHTML = collage(v, get(C, n.dataset.photos.replace(/photos$/, 'photosRatio')));
+      if (Array.isArray(v)) {
+        n.innerHTML = collage(v, get(C, n.dataset.photos.replace(/photos$/, 'photosRatio')));
+        /* Crédit photo : "credit" sur une photo, ou "photosCredit" pour toute la section */
+        var cr = [get(C, n.dataset.photos.replace(/photos$/, 'photosCredit'))];
+        v.forEach(function (p) { if (p && p.credit) cr.push(p.credit); });
+        cr = cr.filter(function (t, i) { return t && cr.indexOf(t) === i; });
+        if (cr.length) n.insertAdjacentHTML('beforeend', '<p class="credit">' + cr.map(esc).join(' · ') + '</p>');
+      }
     });
     root.querySelectorAll('[data-bg]').forEach(function (n) {
       var src = get(C, n.dataset.bg);
@@ -184,6 +191,7 @@
       ['Boutique', 'boutique.html', 'boutique'],
       ['Bénévoles', 'benevoles.html', 'benevoles']
     ];
+    if (!(C.shop && C.shop.visible)) items = items.filter(function (it) { return it[2] !== 'boutique'; });
     var lis = items.map(function (it) {
       return '<li><a href="' + it[1] + '" data-spy="' + it[2] + '"' + (current === it[2] ? ' aria-current="page"' : '') + '>' + it[0] + '</a></li>';
     }).join('');
@@ -357,6 +365,15 @@
   }
 
   /* ---------- Démarrage ---------- */
+  /* Réglages de visibilité et de suivi des visites (voir config.js) */
+  if (CFG.hideFromSearch) {
+    var rb = document.createElement('meta'); rb.name = 'robots'; rb.content = 'noindex, nofollow'; document.head.appendChild(rb);
+  }
+  if (/^[a-z0-9-]{2,40}$/i.test(CFG.goatcounterCode || '')) {
+    var gc = document.createElement('script'); gc.async = true;
+    gc.dataset.goatcounter = 'https://' + CFG.goatcounterCode + '.goatcounter.com/count';
+    gc.src = 'https://gc.zgo.at/count.js'; document.head.appendChild(gc);
+  }
   renderHeader();
   renderFooter();
   bind();
