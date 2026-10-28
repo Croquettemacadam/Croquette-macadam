@@ -181,7 +181,7 @@ window.SITE_CONTENT = {
   legal: {
     name: "Croquette & Macadam",
     form: "Association loi 1901",
-    address: "7 Imp. Saint-jean, Bordeaux",
+    address: "Siège social : 7 Imp. Saint-jean, Bordeaux",
     email: "A_REMPLACER@exemple.fr",
     publicationDirector: "Frederic Prieto",
     rna: "W000000000 (à compléter)",
