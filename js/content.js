@@ -69,7 +69,7 @@ window.SITE_CONTENT = {
       {
         title: "Maraudes du dimanche",
         text: "Chaque semaine, nos bénévoles vont à la rencontre des personnes accompagnées d'un animal pour distribuer croquettes et matériel.",
-        photo: { src: "assets/img/actions-1.jpg", alt: "Maraude (à compléter)", shape: "rounded", ratio: "4 / 3" }
+        photo: { src: "assets/img/actions-1.jpg", alt: "Maraude (à compléter)", shape: "rounded", ratio: "4 / 3", focus: "50% 80%" }
       },
       {
         title: "Soins vétérinaires",
