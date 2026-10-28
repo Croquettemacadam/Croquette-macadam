@@ -186,7 +186,6 @@ window.SITE_CONTENT = {
     publicationDirector: "Frederic Prieto",
     rna: "W000000000 (à compléter)",
     siret: "à compléter",
-     credit: "crédit photo : Pauline Gobin",
     host: "Site hébergé par GitHub Pages.",
     privacy: [
       "Les informations saisies dans le formulaire de contact (nom, prénom, adresse e-mail, téléphone, message) sont utilisées uniquement pour répondre à votre demande. Elles ne sont ni vendues ni transmises à des tiers.",
