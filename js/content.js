@@ -157,19 +157,19 @@ window.SITE_CONTENT = {
     title: "Les bénévoles",
     intro: "Croquette & Macadam fonctionne grâce à celles et ceux qui donnent de leur temps. Voici l'équipe.",
     team: [
-      { name: "Prénom Nom", role: "Présidente / Président", text: "Petit texte de présentation (à compléter).", photo: { src: "assets/img/equipe-1.jpg", alt: "Portrait (à compléter)", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } },
-      { name: "Prénom Nom", role: "Photographe", text: "Petit texte de présentation (à compléter).", photo: { src: "assets/img/equipe-2.jpg", alt: "Portrait (à compléter)", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } },
+      { name: "Frederic Prieto", role: "Président", text: "Fondateur et pillier de l'association. Frederic connaît mieux que personne la vie de nos bénéficiaires.", photo: { src: "assets/img/equipe-1.jpg", alt: "Portrait (à compléter)", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } },
+      { name: "Pauline Gobin", role: "Photographe", text: "Pauline sait mettre en valeurs tous les compagnons. Ses photos apportent de la joie aux bénéficiaires et aux bénévoles.", photo: { src: "assets/img/equipe-2.jpg", alt: "Portrait (à compléter)", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } },
       { name: "Prénom Nom", role: "Bénévole", text: "Petit texte de présentation (à compléter).", photo: { src: "assets/img/equipe-3.jpg", alt: "Portrait (à compléter)", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } }
     ],
     eventsTitle: "Où nous retrouver",
     eventsIntro: "Forums des associations, collectes, événements solidaires : venez nous rencontrer.",
     events: [
       {
-        date: "Septembre 2026",
-        title: "Forum des associations (exemple)",
-        place: "Lieu à compléter, Bordeaux",
-        text: "Description de l'événement (à compléter).",
-        photo: { src: "assets/img/forum-1.jpg", alt: "Stand de l'association (à compléter)", ratio: "16 / 10" }
+        date: "17 octobre 2026",
+        title: "Fête des citernes",
+        place: "Bordeaux Sud",
+        text: "Fête de quartier et forum des association.",
+        photo: { src: "assets/img/forum-1.jpg", alt: "Stand de l'association", ratio: "16 / 10" }
       }
     ],
     espaceTitle: "Espace bénévoles",
@@ -181,12 +181,12 @@ window.SITE_CONTENT = {
   legal: {
     name: "Croquette & Macadam",
     form: "Association loi 1901",
-    address: "Adresse du siège à compléter, Bordeaux",
+    address: "7 Imp. Saint-jean, Bordeaux",
     email: "A_REMPLACER@exemple.fr",
-    publicationDirector: "Nom du ou de la président(e) à compléter",
+    publicationDirector: "Frederic Prieto",
     rna: "W000000000 (à compléter)",
     siret: "à compléter",
-    host: "Site hébergé par GitHub Pages ou Cloudflare Pages (à adapter).",
+    host: "Site hébergé par GitHub Pages.",
     privacy: [
       "Les informations saisies dans le formulaire de contact (nom, prénom, adresse e-mail, téléphone, message) sont utilisées uniquement pour répondre à votre demande. Elles ne sont ni vendues ni transmises à des tiers.",
       "Elles sont conservées le temps nécessaire au traitement de votre demande, puis supprimées (durée à préciser).",
