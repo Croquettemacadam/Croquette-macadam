@@ -79,7 +79,7 @@ window.SITE_CONTENT = {
       {
         title: "Accompagnement en cas de séparation",
         text: "Quand garder l'animal n'est plus possible, nous aidons à trouver un placement ou une adoption, au plus près de l'intérêt de chacun.",
-        photo: { src: "assets/img/actions-3.jpg", alt: "Accompagnement (à compléter)", shape: "rounded", ratio: "4 / 3" }
+        photo: { src: "assets/img/actions-3.jpg", alt: "Accompagnement (à compléter)", shape: "rounded", ratio: "4 / 3", focus: "50% 40%" }
       },
       {
         title: "Collectes et sensibilisation",
