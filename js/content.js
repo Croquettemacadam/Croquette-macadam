@@ -54,7 +54,9 @@ window.SITE_CONTENT = {
     },
     photosRatio: "1 / 1",
     photos: [
-      { src: "assets/img/mission-1.jpg", alt: "Description de la photo 1 (à compléter)", shape: "arch", x: 0, y: 0, w: 60, ratio: "4 / 5", rotate: -2, z: 1 },
+      { src: "assets/img/mission-1.jpg", alt: "Description de la photo 1 (à compléter)", shape: "arch", x: 0, y: 0, w: 60, ratio: "4 / 5", rotate: -2, z: 1,
+      credit: "Photos par Pauline Gobin" 
+      },
       { src: "assets/img/mission-2.jpg", alt: "Description de la photo 2 (à compléter)", shape: "circle", x: 42, y: 42, w: 58, ratio: "1 / 1", rotate: 0, z: 2, 
       credit: "Photos par Pauline Gobin"
       }
