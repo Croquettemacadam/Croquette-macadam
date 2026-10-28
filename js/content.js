@@ -32,7 +32,7 @@ window.SITE_CONTENT = {
     // (photo large, 1920 px de large, moins de 500 Ko). Sans fichier, un fond clair s'affiche.
     background: "assets/img/hero.jpg",
     kicker: "Association bordelaise, active depuis 2018",
-    title: "Des croquettes, du matériel et des soins pour les compagnons des personnes à la rue",
+    title: "Des croquettes, du matériel et des soins pour les compagnons des personnes en grande précarité",
     text: "À Bordeaux, nous aidons les personnes sans domicile à prendre soin de leur animal : nourriture, équipement, accès au vétérinaire."
   },
 
