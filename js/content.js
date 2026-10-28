@@ -120,7 +120,7 @@ window.SITE_CONTENT = {
   shop: {
     // true = la boutique est visible (menu + page). false = en attente : le lien disparaît du menu
     // et la page affiche seulement "boutique non disponible". Pour la rouvrir, remets true.
-    visible: false,
+    visible: true,
     title: "La boutique solidaire",
     intro: "Chaque achat finance les croquettes, le matériel et les soins vétérinaires des compagnons que nous accompagnons.",
     url: "",
