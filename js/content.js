@@ -41,7 +41,7 @@ window.SITE_CONTENT = {
     title: "Un animal à la rue, c'est un lien qui compte",
     paragraphs: [
       "Pour beaucoup de personnes sans domicile, leur animal est une présence de tous les jours, un soutien et parfois une protection.",
-      "Quand l'argent manque, il faut pourtant choisir entre se nourrir soi-même et nourrir son compagnon. Nous voulons que ce choix n'ait pas à être fait.",
+      "Quand l'argent manque, il faut pourtant choisir entre se nourrir, se soigner soi-même et nourrir ou soigner son compagnon. Nous voulons que ce choix n'ait pas à être fait.",
       "En aidant les animaux, nous préservons aussi la dignité et le lien social de leurs maîtres."
     ],
     // Vidéo YouTube : miniature sous le texte, lecture en grand au clic.
