@@ -260,6 +260,7 @@
       'RNA : ' + L.rna + ' · SIRET : ' + L.siret,
       L.host
     ];
+     if (L.credit) lines.push(L.credit);
     host.innerHTML =
       '<div class="wrap foot">' +
         '<div><img class="foot-logo" src="assets/img/logo.png" alt="' + esc(CFG.siteName) + '">' +
