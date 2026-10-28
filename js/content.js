@@ -123,7 +123,7 @@ window.SITE_CONTENT = {
     visible: true,
     title: "La boutique solidaire",
     intro: "Chaque achat finance les croquettes, le matériel et les soins vétérinaires des compagnons que nous accompagnons.",
-    url: "https://www.instagram.com/emerick.dd/",
+    url: "",
     buttonLabel: "Accéder à la boutique en ligne",
     items: [
       { name: "Tee-shirt (exemple)", price: "Prix à définir", text: "Description du produit : matière, tailles, couleurs.", photo: { src: "assets/img/boutique-1.jpg", alt: "Photo produit en vente", ratio: "1 / 1" } },
