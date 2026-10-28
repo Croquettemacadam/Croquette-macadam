@@ -33,7 +33,7 @@ window.SITE_CONTENT = {
     // (photo large, 1920 px de large, moins de 500 Ko). Sans fichier, un fond clair s'affiche.
     background: "assets/img/hero.jpg",
     kicker: "Association bordelaise, active depuis 2018",
-    title: "Des croquettes, du matériel et des soins pour les compagnons des personnes à la rue",
+    title: "Des croquettes, du matériel et des soins pour les compagnons des personnes en grande précarité",
     text: "À Bordeaux, nous aidons les personnes sans domicile à prendre soin de leur animal : nourriture, équipement, accès au vétérinaire."
   },
 
@@ -42,7 +42,7 @@ window.SITE_CONTENT = {
     title: "Un animal à la rue, c'est un lien qui compte",
     paragraphs: [
       "Pour beaucoup de personnes sans domicile, leur animal est une présence de tous les jours, un soutien et parfois une protection.",
-      "Quand l'argent manque, il faut pourtant choisir entre se nourrir soi-même et nourrir son compagnon. Nous voulons que ce choix n'ait pas à être fait.",
+      "Quand l'argent manque, il faut pourtant choisir entre se nourrir ou se soigner soi-même et nourrir ou soigner son compagnon. Nous voulons que ce choix n'ait pas à être fait.",
       "En aidant les animaux, nous préservons aussi la dignité et le lien social de leurs maîtres."
     ],
     // Vidéo YouTube : miniature sous le texte, lecture en grand au clic.
@@ -55,7 +55,9 @@ window.SITE_CONTENT = {
     photosRatio: "1 / 1",
     photos: [
       { src: "assets/img/mission-1.jpg", alt: "Description de la photo 1 (à compléter)", shape: "arch", x: 0, y: 0, w: 60, ratio: "4 / 5", rotate: -2, z: 1 },
-      { src: "assets/img/mission-2.jpg", alt: "Description de la photo 2 (à compléter)", shape: "circle", x: 42, y: 42, w: 58, ratio: "1 / 1", rotate: 0, z: 2 }
+      { src: "assets/img/mission-2.jpg", alt: "Description de la photo 2 (à compléter)", shape: "circle", x: 42, y: 42, w: 58, ratio: "1 / 1", rotate: 0, z: 2, 
+      credit: "Photos par Pauline Gobin"
+      }
     ]
   },
 
