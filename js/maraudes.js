@@ -7,7 +7,7 @@
   var dynamic = [];
   var editing = null; /* { id|null, photos: [urls] } */
 
-  function canEdit() { var u = B.user(); return !!u && (u.role === 'photographe' || u.role === 'admin'); }
+  function canEdit() { var u = B.user(); return !!u && (u.role === 'photographe' || u.role === 'admin' || u.role === 'president'); }
 
   function entries() {
     var st = C.maraudes.entries.map(function (e) { return { id: null, date: e.date, title: e.title, text: e.text, photos: e.photos || [] }; });

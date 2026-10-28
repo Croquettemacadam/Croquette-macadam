@@ -113,12 +113,12 @@
 
       async listEvents() { need.apply(null, ROLES); return db.events.slice(); },
       async createEvent(e) {
-        need('admin');
+        need('admin', 'president');
         db.events.push({ id: uid(), date: e.date, time: e.time || '', kind: e.kind || 'maraude', title: e.title, place: e.place || '', capacity: e.capacity || null, description: e.description || '' });
         persist();
       },
       async deleteEvent(id) {
-        need('admin');
+        need('admin', 'president');
         db.events = db.events.filter(function (e) { return e.id !== id; });
         db.regs = db.regs.filter(function (r) { return r.event_id !== id; });
         persist();
@@ -145,19 +145,19 @@
 
       async listMaraudes() { return db.maraudes.slice(); },
       async saveMaraude(m) {
-        need('photographe', 'admin');
+        need('photographe', 'admin', 'president');
         var row = { id: m.id || uid(), date: m.date, title: m.title || '', text: m.text || '', photos: m.photos || [] };
         var i = db.maraudes.findIndex(function (x) { return x.id === row.id; });
         if (i >= 0) db.maraudes[i] = row; else db.maraudes.push(row);
         persist();
       },
       async deleteMaraude(id) {
-        need('photographe', 'admin');
+        need('photographe', 'admin', 'president');
         db.maraudes = db.maraudes.filter(function (x) { return x.id !== id; });
         persist();
       },
       async uploadPhoto(file) {
-        need('photographe', 'admin');
+        need('photographe', 'admin', 'president');
         return blobToDataUrl(await compressImage(file, 1000, 0.7));
       },
 
@@ -176,15 +176,15 @@
       },
 
       demoAccounts: [
-        { username: 'president', code: 'president-demo', label: 'Président : calendrier + fiches (modifie)' },
+        { username: 'president', code: 'president-demo', label: 'Président : tout (événements, comptes, photos, fiches)' },
         { username: 'admin', code: 'admin-demo', label: 'Administrateur : événements + comptes' },
         { username: 'photo', code: 'photo-demo', label: 'Photographe : photos des maraudes' },
         { username: 'benevole1', code: 'benevole-demo', label: 'Bénévole : calendrier + fiches (lecture)' }
       ],
       canManageAccounts: true,
-      async listUsers() { need('admin'); return db.users.map(pub); },
+      async listUsers() { need('admin', 'president'); return db.users.map(pub); },
       async createUser(u) {
-        need('admin');
+        need('admin', 'president');
         var name = String(u.username || '').trim().toLowerCase();
         if (!/^[a-z0-9._-]{2,30}$/.test(name)) throw new Error('Identifiant : 2 à 30 caractères (lettres, chiffres, . _ -).');
         if (db.users.some(function (x) { return x.username === name; })) throw new Error('Cet identifiant existe déjà.');
@@ -194,14 +194,14 @@
         persist();
       },
       async deleteUser(username) {
-        need('admin');
+        need('admin', 'president');
         if (username === me.username) throw new Error('Tu ne peux pas supprimer ton propre compte.');
         db.users = db.users.filter(function (x) { return x.username !== username; });
         db.regs = db.regs.filter(function (x) { return x.user_id !== username; });
         persist();
       },
       async resetCode(username, code) {
-        need('admin');
+        need('admin', 'president');
         if (String(code || '').length < 6) throw new Error('Le code doit faire au moins 6 caractères.');
         var u = db.users.find(function (x) { return x.username === username; });
         if (!u) throw new Error('Compte introuvable.');

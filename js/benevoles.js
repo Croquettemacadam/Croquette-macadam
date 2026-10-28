@@ -23,7 +23,7 @@
   /* ---------- Chargement des données selon l'onglet ---------- */
   async function loadTab() {
     var u = B.user();
-    if (state.tab === 'admin' && u.role !== 'admin') state.tab = 'calendrier';
+    if (state.tab === 'admin' && u.role !== 'admin' && u.role !== 'president') state.tab = 'calendrier';
     if (state.tab === 'calendrier' || state.tab === 'admin') {
       var r = await Promise.all([B.listEvents(), B.listRegistrations()]);
       state.events = r[0]; state.regs = r[1];
@@ -59,8 +59,8 @@
     var u = B.user();
     var tabs = [['calendrier', 'Calendrier']];
     tabs.push(['fiches', 'Fiches bénéficiaires']);
-    if (u.role === 'admin') tabs.push(['admin', 'Administration']);
-    var extra = (u.role === 'photographe' || u.role === 'admin')
+    if (u.role === 'admin' || u.role === 'president') tabs.push(['admin', 'Administration']);
+    var extra = (u.role === 'photographe' || u.role === 'admin' || u.role === 'president')
       ? '<a class="btn btn-ghost btn-sm" href="maraudes.html">Gérer les photos des maraudes</a>' : '';
     var body = state.tab === 'admin' ? adminHtml() : state.tab === 'fiches' ? fichesHtml() : calendarHtml(u);
     root.innerHTML = CM.demoNotice() +
