@@ -103,7 +103,7 @@ window.SITE_CONTENT = {
     donation: "40 € permettent d'acheter 20 kg de croquettes. 60 € peuvent contribuer à une consultation vétérinaire.",
     photosRatio: "10 / 8",
     photos: [
-      { src: "assets/img/impact-1.jpg", alt: "Description de la photo (à compléter)", shape: "polaroid", x: 8, y: 4, w: 84, ratio: "4 / 3", rotate: 3, caption: "Légende à écrire" }
+      { src: "assets/img/impact-1.jpg", alt: "Description de la photo (à compléter)", shape: "polaroid", x: 8, y: 4, w: 84, ratio: "4 / 3", rotate: 3, caption: "Une gamelle pour tous" }
     ]
   },
 
