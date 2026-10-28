@@ -54,8 +54,8 @@ window.SITE_CONTENT = {
     },
     photosRatio: "1 / 1",
     photos: [
-      { src: "assets/img/mission-1.jpg", alt: "Description de la photo 1 (à compléter)", shape: "arch", x: 0, y: 0, w: 60, ratio: "4 / 5", rotate: -2, z: 1 },
-      { src: "assets/img/mission-2.jpg", alt: "Description de la photo 2 (à compléter)", shape: "circle", x: 42, y: 42, w: 58, ratio: "1 / 1", focus: "50% 70%", rotate: 0, z: 2, 
+      { src: "assets/img/mission-1.jpg", alt: "Première image de présentation", shape: "arch", x: 0, y: 0, w: 60, ratio: "4 / 5", rotate: -2, z: 1 },
+      { src: "assets/img/mission-2.jpg", alt: "Deuxième image de présentation", shape: "circle", x: 42, y: 42, w: 58, ratio: "1 / 1", focus: "50% 70%", rotate: 0, z: 2, 
       credit: "Photos par Pauline Gobin"
       }
     ]
@@ -69,22 +69,22 @@ window.SITE_CONTENT = {
       {
         title: "Maraudes du dimanche",
         text: "Chaque semaine, nos bénévoles vont à la rencontre des personnes accompagnées d'un animal pour distribuer croquettes et matériel.",
-        photo: { src: "assets/img/actions-1.jpg", alt: "Maraude (à compléter)", shape: "rounded", ratio: "4 / 3", focus: "50% 80%" }
+        photo: { src: "assets/img/actions-1.jpg", alt: "Présentations d'une maraude", shape: "rounded", ratio: "4 / 3", focus: "50% 80%" }
       },
       {
         title: "Soins vétérinaires",
         text: "Grâce à des vétérinaires partenaires, nous participons aux frais de consultation et de soins en cas de besoin ou d'urgence.",
-        photo: { src: "assets/img/actions-2.jpg", alt: "Soins vétérinaires (à compléter)", shape: "rounded", ratio: "4 / 3" }
+        photo: { src: "assets/img/actions-2.jpg", alt: "Présentation des soins vétérinaires", shape: "rounded", ratio: "4 / 3" }
       },
       {
         title: "Accompagnement en cas de séparation",
         text: "Quand garder l'animal n'est plus possible, nous aidons à trouver un placement ou une adoption, au plus près de l'intérêt de chacun.",
-        photo: { src: "assets/img/actions-3.jpg", alt: "Accompagnement (à compléter)", shape: "rounded", ratio: "4 / 3", focus: "50% 40%" }
+        photo: { src: "assets/img/actions-3.jpg", alt: "Présentation des accompagnements", shape: "rounded", ratio: "4 / 3", focus: "50% 40%" }
       },
       {
         title: "Collectes et sensibilisation",
         text: "Collectes de matériel, événements solidaires et interventions auprès des scolaires pour changer le regard sur la vie à la rue.",
-        photo: { src: "assets/img/actions-4.jpg", alt: "Événement (à compléter)", shape: "rounded", ratio: "4 / 3" }
+        photo: { src: "assets/img/actions-4.jpg", alt: "Présenation des événements", shape: "rounded", ratio: "4 / 3" }
       }
     ]
   },
@@ -92,7 +92,7 @@ window.SITE_CONTENT = {
   impact: {
     kicker: "Notre impact",
     title: "Notre impact en 2025",
-    intro: "Quelques chiffres pour mesurer ce que votre soutien rend possible. (Chiffres repris de l'ancien site : à mettre à jour.)",
+    intro: "Quelques chiffres pour mesurer ce que votre soutien rend possible.",
     counters: [
       { value: 40, label: "bénéficiaires et animaux suivis" },
       { value: 15, label: "bénévoles" },
@@ -103,7 +103,7 @@ window.SITE_CONTENT = {
     donation: "40 € permettent d'acheter 20 kg de croquettes. 60 € peuvent contribuer à une consultation vétérinaire.",
     photosRatio: "10 / 8",
     photos: [
-      { src: "assets/img/impact-1.jpg", alt: "Description de la photo (à compléter)", shape: "polaroid", x: 8, y: 4, w: 84, ratio: "4 / 3", rotate: 3, caption: "Une gamelle pour tous" }
+      { src: "assets/img/impact-1.jpg", alt: "Phot d'illustration de l'utilité des dons", shape: "polaroid", x: 8, y: 4, w: 84, ratio: "4 / 3", rotate: 3, caption: "Une gamelle pour tous" }
     ]
   },
 
@@ -126,9 +126,9 @@ window.SITE_CONTENT = {
     url: "",
     buttonLabel: "Accéder à la boutique en ligne",
     items: [
-      { name: "Tee-shirt (exemple)", price: "Prix à définir", text: "Description du produit : matière, tailles, couleurs.", photo: { src: "assets/img/boutique-1.jpg", alt: "Tee-shirt (à compléter)", ratio: "1 / 1" } },
-      { name: "Bijou (exemple)", price: "Prix à définir", text: "Description du produit : fait main, matière, taille.", photo: { src: "assets/img/boutique-2.jpg", alt: "Bijou (à compléter)", ratio: "1 / 1" } },
-      { name: "Tote bag (exemple)", price: "Prix à définir", text: "Description du produit.", photo: { src: "assets/img/boutique-3.jpg", alt: "Tote bag (à compléter)", ratio: "1 / 1" } }
+      { name: "Tee-shirt (exemple)", price: "Prix à définir", text: "Description du produit : matière, tailles, couleurs.", photo: { src: "assets/img/boutique-1.jpg", alt: "Photo produit en vente", ratio: "1 / 1" } },
+      { name: "Bijou (exemple)", price: "Prix à définir", text: "Description du produit : fait main, matière, taille.", photo: { src: "assets/img/boutique-2.jpg", alt: "Photo produit en vente", ratio: "1 / 1" } },
+      { name: "Tote bag (exemple)", price: "Prix à définir", text: "Description du produit.", photo: { src: "assets/img/boutique-3.jpg", alt: "Photo produit en vente", ratio: "1 / 1" } }
     ]
   },
 
@@ -141,12 +141,12 @@ window.SITE_CONTENT = {
     intro: "Chaque dimanche, nous allons à la rencontre des personnes et de leurs compagnons. Voici quelques images de nos sorties.",
     entries: [
       {
-        date: "2026-10-11",
-        title: "Maraude d'exemple",
-        text: "Texte d'exemple : quelques lignes sur cette maraude. Remplace-le ou supprime cette entrée.",
+        date: "2026-09-27",
+        title: "Maraude hebdomadaire",
+        text: "Nous y avons rencontrés X bénéficiaires et leurs X compagnons, à qui nous avons distribué : résultats de la maraude.",
         photos: [
-          { src: "assets/img/maraude-2026-10-11-1.jpg", alt: "Maraude du 11 octobre (à compléter)" },
-          { src: "assets/img/maraude-2026-10-11-2.jpg", alt: "Maraude du 11 octobre (à compléter)" }
+          { src: "assets/img/maraude-2026-10-11-1.jpg", alt: "Maraude du 27 septembre" },
+          { src: "assets/img/maraude-2026-10-11-2.jpg", alt: "Maraude du 27 septembre" }
         ]
       }
     ]
@@ -157,9 +157,9 @@ window.SITE_CONTENT = {
     title: "Les bénévoles",
     intro: "Croquette & Macadam fonctionne grâce à celles et ceux qui donnent de leur temps. Voici l'équipe.",
     team: [
-      { name: "Frederic Prieto", role: "Président", text: "Fondateur et pillier de l'association. Frederic connaît mieux que personne la vie de nos bénéficiaires.", photo: { src: "assets/img/equipe-1.jpg", alt: "Portrait (à compléter)", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } },
-      { name: "Pauline Gobin", role: "Photographe", text: "Pauline sait mettre en valeurs tous les compagnons. Ses photos apportent de la joie aux bénéficiaires et aux bénévoles.", photo: { src: "assets/img/equipe-2.jpg", alt: "Portrait (à compléter)", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } },
-      { name: "Prénom Nom", role: "Bénévole", text: "Petit texte de présentation (à compléter).", photo: { src: "assets/img/equipe-3.jpg", alt: "Portrait (à compléter)", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } }
+      { name: "Frederic Prieto", role: "Président", text: "Fondateur et pillier de l'association. Frederic connaît mieux que personne la vie de nos bénéficiaires.", photo: { src: "assets/img/equipe-1.jpg", alt: "Portrait du président", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } },
+      { name: "Pauline Gobin", role: "Photographe", text: "Pauline sait mettre en valeurs tous les compagnons. Ses photos apportent de la joie aux bénéficiaires et aux bénévoles.", photo: { src: "assets/img/equipe-2.jpg", alt: "Portrait de la photographe", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } },
+      { name: "Prénom Nom", role: "Bénévole", text: "Petit texte de présentation (à compléter).", photo: { src: "assets/img/equipe-3.jpg", alt: "Portrait du/de la bénévole", shape: "circle", ratio: "1 / 1", focus: "50% 30%" } }
     ],
     eventsTitle: "Où nous retrouver",
     eventsIntro: "Forums des associations, collectes, événements solidaires : venez nous rencontrer.",
