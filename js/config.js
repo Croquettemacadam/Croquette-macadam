@@ -22,7 +22,7 @@ window.SITE_CONFIG = {
   // Option 1 (recommandée) : un service comme Formspree ou Web3Forms.
   //   Colle ici l'adresse fournie, ex. "https://formspree.io/f/xxxxxxx".
   //   Les messages arrivent alors directement dans la boîte mail de l'asso.
-  contactEndpoint: "",
+  contactEndpoint: "https://formspree.io/f/xpppjdyz",
   // Option 2 (secours) : ouvre le logiciel de mail du visiteur avec le message prérempli.
   contactEmail: "A_REMPLACER@exemple.fr",
 
