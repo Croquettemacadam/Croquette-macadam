@@ -12,12 +12,12 @@
    OPTIONS D'UNE PHOTO (toutes facultatives, sauf src)
      src      "assets/img/nom.jpg"      le fichier
      alt      "Description"             texte pour l'accessibilité
-     shape    "rounded" | "arch" | "circle" | "blob" | "polaroid" | "square"
+     shape    "rounded" --> carré avec coins arrondis | "arch" | "circle" | "blob" | "polaroid" | "square"
                                         forme du cadre (rounded par défaut)
      ratio    "4 / 3", "1 / 1", "3 / 4", "16 / 9"...   proportions du cadre (largeur / hauteur)
      focus    "50% 20%"                 partie de la photo à garder (gauche-droite, haut-bas)
      caption  "Texte"                   légende (surtout pour le style polaroid)
-     credit   "Photo par Prénom Nom"    crédit affiché sous les photos de la section (Mission, Impact)
+     credit   "Photo/vidéo par Prénom Nom"    crédit affiché sous les photos de la section (Mission, Impact)
    OPTIONS SUPPLÉMENTAIRES POUR UN COLLAGE (sections Mission et Impact)
      x, y     0 à 100                   position du coin haut-gauche, en % du cadre du collage
      w        10 à 100                  largeur de la photo, en % du cadre du collage
