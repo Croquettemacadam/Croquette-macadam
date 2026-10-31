@@ -56,7 +56,7 @@ window.SITE_CONTENT = {
     photos: [
       { src: "assets/img/mission-1.jpg", alt: "Première image de présentation", shape: "arch", x: 0, y: 0, w: 60, ratio: "4 / 5", rotate: -2, z: 1 },
       { src: "assets/img/mission-2.jpg", alt: "Deuxième image de présentation", shape: "circle", x: 42, y: 42, w: 58, ratio: "1 / 1", focus: "50% 70%", rotate: 0, z: 2, 
-      credit: "Photos par Pauline Gobin"
+      credit: "Photos par [Pauline Gobin](https://polinefolio.framer.website/)"
       }
     ]
   },
@@ -125,6 +125,19 @@ window.SITE_CONTENT = {
     intro: "Chaque achat finance les croquettes, le matériel et les soins vétérinaires des compagnons que nous accompagnons.",
     url: "",
     buttonLabel: "Accéder à la boutique en ligne",
+    // ESPACE VENTE DE PHOTOS (désactivé pour l'instant). Pour l'activer : supprime la ligne "/*" juste
+    // en dessous et la ligne "*/" juste après le bloc, puis complète le partenaire et l'adresse (url).
+    /*
+    photoSale: {
+      title: "Nos photos",
+      text: "Les photos de nos maraudes, prises par [Pauline Gobin](https://polinefolio.framer.website/), sont disponibles à l'impression. La vente et l'impression sont gérées par NOM DU PARTENAIRE.",
+      buttonLabel: "Voir et commander les photos",
+      url: "",
+      photos: [
+        { src: "assets/img/vente-photo-1.jpg", alt: "Photo en vente", ratio: "4 / 3" }
+      ]
+    },
+    */
     items: [
       { name: "Tee-shirt (exemple)", price: "Prix à définir", text: "Description du produit : matière, tailles, couleurs.", photo: { src: "assets/img/boutique-1.jpg", alt: "Photo produit en vente", ratio: "1 / 1" } },
       { name: "Bijou (exemple)", price: "Prix à définir", text: "Description du produit : fait main, matière, taille.", photo: { src: "assets/img/boutique-2.jpg", alt: "Photo produit en vente", ratio: "1 / 1" } },
@@ -186,7 +199,7 @@ window.SITE_CONTENT = {
     publicationDirector: "Frederic Prieto",
     rna: "W000000000 (à compléter)",
     siret: "à compléter",
-     credit: "Crédit photo : Pauline Gobin",
+     credit: "Crédit photo : [Pauline Gobin](https://polinefolio.framer.website/)",
     host: "Site hébergé par GitHub Pages.",
     privacy: [
       "Les informations saisies dans le formulaire de contact (nom, prénom, adresse e-mail, téléphone, message) sont utilisées uniquement pour répondre à votre demande. Elles ne sont ni vendues ni transmises à des tiers.",

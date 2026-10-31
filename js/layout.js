@@ -8,6 +8,10 @@
   var CFG = window.SITE_CONFIG;
   var B = window.Backend;
 
+  /* Texte avec lien cliquable : écris [Nom](https://adresse) dans un crédit. Le reste est du texte simple. */
+  function rich(t) {
+    return esc(t).replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -131,7 +135,7 @@
         var cr = [get(C, n.dataset.photos.replace(/photos$/, 'photosCredit'))];
         v.forEach(function (p) { if (p && p.credit) cr.push(p.credit); });
         cr = cr.filter(function (t, i) { return t && cr.indexOf(t) === i; });
-        if (cr.length) n.insertAdjacentHTML('beforeend', '<p class="credit">' + cr.map(esc).join(' · ') + '</p>');
+        if (cr.length) n.insertAdjacentHTML('beforeend', '<p class="credit">' + cr.map(rich).join(' · ') + '</p>');
       }
     });
     root.querySelectorAll('[data-bg]').forEach(function (n) {
@@ -270,7 +274,7 @@
             '<a class="btn btn-sm" data-don>Faire un don via HelloAsso</a>' +
           '</div></div>' +
         '<div><h2>Informations légales</h2>' +
-          '<ul class="legal-list">' + lines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' +
+          '<ul class="legal-list">' + lines.map(function (l) { return '<li>' + rich(l) + '</li>'; }).join('') + '</ul>' +
           '<details><summary>Politique de confidentialité</summary>' +
             L.privacy.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</details></div>' +
         '<p class="copy">© ' + new Date().getFullYear() + ' ' + esc(CFG.siteName) + ' – Tous droits réservés</p>' +
@@ -391,7 +395,7 @@
   ready.then(renderAuth);
 
   window.CM = {
-    C: C, CFG: CFG, esc: esc, get: get, photoFigure: photoFigure, collage: collage, fmtDate: fmtDate, bind: bind,
+    C: C, CFG: CFG, esc: esc, rich: rich, get: get, photoFigure: photoFigure, collage: collage, fmtDate: fmtDate, bind: bind,
     animateCounters: animateCounters, toast: toast, openLogin: openLogin, openVideo: openVideo, demoNotice: demoNotice,
     ROLE_LABEL: ROLE_LABEL, ready: ready, initError: null
   };
