@@ -134,7 +134,8 @@ window.SITE_CONTENT = {
       buttonLabel: "Voir et commander les photos",
       url: "https://polygone.pixieset.com/croquettesandmacadam-com/",
       photos: [
-        { src: "assets/img/vente-photo-1.jpg", alt: "Photo en vente", ratio: "4 / 3" }
+        { src: "assets/img/vente-photo-1.jpg", alt: "Photo en vente", ratio: "4 / 3" },
+        { src: "assets/img/vente-photo-2.jpg", alt: "Photo en vente", ratio: "4 / 3" }
       ]
     },
 
