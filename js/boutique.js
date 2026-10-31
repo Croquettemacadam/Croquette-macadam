@@ -5,6 +5,10 @@
   var shopUrl = String(S.url || '').trim();
   if (shopUrl && !/^https?:\/\//i.test(shopUrl)) shopUrl = '';
 
+  if (!S.visible) {
+    document.getElementById('contenu').innerHTML = '<section class="section"><div class="wrap"><h1>Boutique</h1><p class="lead">Cette page n\'est pas disponible pour le moment.</p><p><a class="btn" href="index.html">Retour à l\'accueil</a></p></div></section>';
+    return;
+  }
   var cta = document.getElementById('shop-cta');
   var note = document.getElementById('shop-note');
   if (shopUrl) {
@@ -24,4 +28,19 @@
       (it.price ? '<p class="price">' + esc(it.price) + '</p>' : '') +
       '<p>' + esc(it.text || '') + '</p>' + btn + '</div></article>';
   }).join('');
+
+  /* Espace « vente de photos » : présentation + lien vers la page où la vente est gérée */
+  var PS = S.photoSale;
+  if (PS && (PS.title || PS.text)) {
+    var psUrl = String(PS.url || '').trim();
+    if (psUrl && !/^https?:\/\//i.test(psUrl)) psUrl = '';
+    var host = document.createElement('section');
+    host.className = 'photo-sale';
+    host.innerHTML = '<h2>' + esc(PS.title || 'Photos') + '</h2>' +
+      (PS.text ? '<p>' + CM.rich(PS.text) + '</p>' : '') +
+      ((PS.photos || []).length ? '<div class="photos-grid">' + PS.photos.map(function (p) { return CM.photoFigure(p, { ratio: '4 / 3' }); }).join('') + '</div>' : '') +
+      (psUrl ? '<a class="btn" href="' + esc(psUrl) + '" target="_blank" rel="noopener">' + esc(PS.buttonLabel || 'Voir les photos') + '</a>'
+             : '<span class="btn" aria-disabled="true">Bientôt disponible</span>');
+    document.getElementById('shop-root').insertAdjacentElement('afterend', host);
+  }
 })();
