@@ -127,17 +127,17 @@ window.SITE_CONTENT = {
     buttonLabel: "Accéder à la boutique en ligne",
     // ESPACE VENTE DE PHOTOS (désactivé pour l'instant). Pour l'activer : supprime la ligne "/*" juste
     // en dessous et la ligne "*/" juste après le bloc, puis complète le partenaire et l'adresse (url).
-    /*
+     
     photoSale: {
       title: "Nos photos",
-      text: "Les photos de nos maraudes, prises par [Pauline Gobin](https://polinefolio.framer.website/), sont disponibles à l'impression. La vente et l'impression sont gérées par NOM DU PARTENAIRE.",
+      text: "Les photos de nos maraudes, prises par [Pauline Gobin](https://polinefolio.framer.website/), sont disponibles à l'impression. La vente et l'impression sont gérées par Polygone.",
       buttonLabel: "Voir et commander les photos",
-      url: "",
+      url: "https://polygone.pixieset.com/croquettesandmacadam-com/",
       photos: [
         { src: "assets/img/vente-photo-1.jpg", alt: "Photo en vente", ratio: "4 / 3" }
       ]
     },
-    */
+
     items: [
       { name: "Tee-shirt (exemple)", price: "Prix à définir", text: "Description du produit : matière, tailles, couleurs.", photo: { src: "assets/img/boutique-1.jpg", alt: "Photo produit en vente", ratio: "1 / 1" } },
       { name: "Bijou (exemple)", price: "Prix à définir", text: "Description du produit : fait main, matière, taille.", photo: { src: "assets/img/boutique-2.jpg", alt: "Photo produit en vente", ratio: "1 / 1" } },
