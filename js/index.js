@@ -4,7 +4,8 @@
   var CM = window.CM, C = CM.C, CFG = CM.CFG, esc = CM.esc;
 
   /* Actions */
-  document.getElementById('actions-list').innerHTML = C.actions.items.map(function (a) {
+  var actionsList = document.getElementById('actions-list');
+  if (actionsList) actionsList.innerHTML = C.actions.items.map(function (a) {
     return '<article class="card">' + CM.photoFigure(a.photo, { ratio: '4 / 3' }) +
       '<div class="card-body"><h3>' + esc(a.title) + '</h3><p>' + esc(a.text) + '</p></div></article>';
   }).join('');
@@ -18,19 +19,23 @@
         '<span class="video-thumb"><img src="https://i.ytimg.com/vi/' + esc(V.id) + '/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">' +
         '<span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>' +
         '<span class="video-meta"><strong>' + esc(V.title) + '</strong><small>Cliquer pour agrandir</small></span></button>' +
-        (V.credit ? '<p class="credit">' + esc(V.credit) + '</p>' : '') + '</div>';
+        (V.credit ? '<p class="credit">' + CM.rich(V.credit) + '</p>' : '') + '</div>';
     videoRoot.querySelector('.video-card').addEventListener('click', function () { CM.openVideo(V.id, V.title); });
   }
 
   /* Compteurs */
-  document.getElementById('impact-counters').innerHTML = C.impact.counters.map(function (c) {
-    return '<div class="counter"><span class="num" data-count="' + Number(c.value) + '">0</span><span class="lab">' + esc(c.label) + '</span></div>';
-  }).join('');
-  CM.animateCounters();
+  var counters = document.getElementById('impact-counters');
+  if (counters) {
+    counters.innerHTML = C.impact.counters.map(function (c) {
+      return '<div class="counter"><span class="num" data-count="' + Number(c.value) + '">0</span><span class="lab">' + esc(c.label) + '</span></div>';
+    }).join('');
+    CM.animateCounters();
+  }
 
   /* Formulaire de contact */
   var form = document.getElementById('contact-form');
   var status = document.getElementById('contact-status');
+  if (!form) return; /* section Contact retirée de la page : rien à brancher */
   function say(msg, kind) { status.textContent = msg; status.className = 'status ' + (kind || ''); }
 
   form.addEventListener('submit', function (e) {
