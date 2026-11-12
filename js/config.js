@@ -8,11 +8,11 @@ window.SITE_CONFIG = {
   //              uniquement dans le navigateur de la personne. Sert à tester le site.
   //              NE PAS utiliser en production : rien n'est partagé ni sécurisé.
   // "supabase" : vraie base de données partagée et sécurisée (voir README.md).
-  mode: "demo",
+  mode: "supabase",
 
   // Remplis ces trois lignes quand tu passes en mode "supabase"
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "ixgsrjssxrmfvmuzalyj",
+  supabaseAnonKey: "sb_publishable_JXwO2ledNM4s4BsUZvMd6Q_amlORdti",
   // Les identifiants (ex. "marie") sont transformés en adresse fictive
   // marie@asso.local : aucun vrai e-mail n'est demandé aux bénévoles.
   fakeEmailDomain: "asso.local",
