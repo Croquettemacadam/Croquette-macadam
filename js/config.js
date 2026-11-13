@@ -11,7 +11,7 @@ window.SITE_CONFIG = {
   mode: "supabase",
 
   // Remplis ces trois lignes quand tu passes en mode "supabase"
-  supabaseUrl: "ixgsrjssxrmfvmuzalyj",
+  supabaseUrl: "https://ixgsrjssxrmfvmuzalyj.supabase.co",
   supabaseAnonKey: "sb_publishable_JXwO2ledNM4s4BsUZvMd6Q_amlORdti",
   // Les identifiants (ex. "marie") sont transformés en adresse fictive
   // marie@asso.local : aucun vrai e-mail n'est demandé aux bénévoles.
