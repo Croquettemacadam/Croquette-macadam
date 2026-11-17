@@ -198,8 +198,8 @@ window.SITE_CONTENT = {
     address: "Siège social : 7 Imp. Saint-jean, Bordeaux",
     email: "croquette.macadam@gmail.com",
     publicationDirector: "Frederic Prieto",
-    rna: "W000000000 (à compléter)",
-    siret: "à compléter",
+    RNA: "W332023358",
+    SIRET: "841 629 033 00017",
      credit: "Crédit photo : [Pauline Gobin](https://polinefolio.framer.website/)",
     host: "Site hébergé par GitHub Pages.",
     privacy: [
