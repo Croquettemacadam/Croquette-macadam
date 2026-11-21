@@ -233,9 +233,9 @@
       });
     }
     async function loadProfile(userId) {
-      var r = await sb.from('profiles').select('username,display_name,role').eq('id', userId).single();
-      if (r.error || !r.data) { me = null; throw new Error("Profil introuvable : ajoute la ligne correspondante dans la table profiles (voir README)."); }
-      me = { id: userId, username: r.data.username, name: r.data.display_name, role: r.data.role };
+      var r = await sb.from('profiles').select('username,display_name,role,is_active,must_change_password').eq('id', userId).single();
+      if (r.error || !r.data || r.data.is_active === false) { me = null; await sb.auth.signOut(); throw new Error('Ce compte est désactivé ou son profil est introuvable. Contacte le bureau.'); }
+      me = { id: userId, username: r.data.username, name: r.data.display_name, role: r.data.role, mustChangePassword: !!r.data.must_change_password };
     }
     function unsupported() { throw new Error('Les comptes se gèrent dans le tableau de bord Supabase (voir README).'); }
 
@@ -296,11 +296,23 @@
       },
       async deleteFiche(id) { ck(await sb.from('fiches').delete().eq('id', id)); },
 
-      canManageAccounts: false,
-      listUsers: async function () { return []; },
-      createUser: async function () { unsupported(); },
-      deleteUser: async function () { unsupported(); },
-      resetCode: async function () { unsupported(); }
+      canManageAccounts: true,
+      async accountAction(action, payload) {
+        var r = await sb.functions.invoke('manage-accounts', { body: Object.assign({ action: action }, payload || {}) });
+        if (r.error) { var msg = r.error.message || 'Erreur de gestion du compte.'; if (r.error.context && typeof r.error.context.json === 'function') { try { var j = await r.error.context.json(); msg = j.error || msg; } catch (_) {} } throw new Error(msg); }
+        if (r.data && r.data.error) throw new Error(r.data.error);
+        return r.data;
+      },
+      async listUsers() { return (await this.accountAction('list')).users || []; },
+      async createUser(u) { return this.accountAction('create', { username: u.username, display_name: u.name, role: u.role, password: u.code }); },
+      async updateUser(u) { return this.accountAction('update', u); },
+      async deleteUser(username) { return this.accountAction('deactivate', { username: username }); },
+      async resetCode(username, code) { return this.accountAction('reset-password', { username: username, password: code }); },
+      async changeOwnPassword(currentPassword, newPassword) {
+        await this.accountAction('change-own-password', { current_password: currentPassword, new_password: newPassword });
+        me.mustChangePassword = false;
+        return true;
+      }
     };
   }
 
