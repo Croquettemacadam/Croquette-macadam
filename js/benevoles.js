@@ -8,7 +8,7 @@
   function pad(n) { return String(n).padStart(2, '0'); }
   function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
   var now = new Date();
-  var state = { tab: 'calendrier', y: now.getFullYear(), m: now.getMonth(), sel: null, events: [], regs: [], fiches: [], users: [], editFiche: null, q: '' };
+  var state = { tab: 'calendrier', y: now.getFullYear(), m: now.getMonth(), sel: null, events: [], regs: [], fiches: [], users: [], editFiche: null, resetTarget: null, q: '' };
 
   /* ---------- Parties publiques ---------- */
   document.getElementById('equipe-root').innerHTML = BC.team.map(function (p) {
@@ -46,6 +46,7 @@
         '<button class="btn" type="button" data-act="login">Se connecter</button></div>';
       return;
     }
+    if (u.mustChangePassword) { root.innerHTML = passwordChangeHtml(true); return; }
     try { await loadTab(); } catch (e) {
       if (seq === renderSeq) root.innerHTML = '<div class="notice err">' + esc(e.message) + '</div>';
       return;
@@ -53,6 +54,15 @@
     if (seq !== renderSeq) return;
     if (!B.user()) return renderEspace();
     paint();
+  }
+
+  function passwordChangeHtml(required) {
+    return '<section class="panel"><h3>' + (required ? 'Première connexion : choisir ton mot de passe personnel' : 'Mon mot de passe') + '</h3>' +
+      (required ? '<p class="muted">Tu dois remplacer le mot de passe provisoire avant d\'utiliser le site.</p>' : '') +
+      '<form class="form" data-form="changepassword"><label><span class="req">Mot de passe actuel</span><input type="password" name="currentPassword" required autocomplete="current-password"></label>' +
+      '<label><span class="req">Nouveau mot de passe (12 caractères minimum)</span><input type="password" name="newPassword" required minlength="12" autocomplete="new-password"></label>' +
+      '<label><span class="req">Confirmer le nouveau mot de passe</span><input type="password" name="confirmPassword" required minlength="12" autocomplete="new-password"></label>' +
+      '<button class="btn btn-sm" type="submit">Enregistrer mon mot de passe</button></form></section>';
   }
 
   function paint() {
@@ -67,7 +77,7 @@
       '<div class="row"><p style="margin:0">Connecté : <strong>' + esc(u.name) + '</strong> <span class="muted">(' + esc(CM.ROLE_LABEL[u.role]) + ')</span></p>' + extra + '</div>' +
       '<div class="tabs" role="tablist">' + tabs.map(function (t) {
         return '<button class="tab" role="tab" type="button" data-act="tab" data-tab="' + t[0] + '" aria-selected="' + (state.tab === t[0]) + '">' + t[1] + '</button>';
-      }).join('') + '</div>' + body;
+      }).join('') + '</div>' + body + passwordChangeHtml(false);
   }
 
   /* ---------- Calendrier ---------- */
@@ -136,22 +146,28 @@
         '<button class="btn btn-danger btn-sm" type="button" data-act="delevent" data-id="' + esc(e.id) + '">Supprimer</button></div>';
     }).join('') : '<p class="muted">Aucun événement à venir.</p>';
 
-    var roleOpts = B.ROLES.map(function (r) { return '<option value="' + r + '">' + esc(CM.ROLE_LABEL[r]) + '</option>'; }).join('');
+    var current = B.user();
+    var allowedRoles = current.role === 'president' ? B.ROLES : ['benevole', 'photographe', 'admin'];
+    var roleOpts = allowedRoles.map(function (r) { return '<option value="' + r + '">' + esc(CM.ROLE_LABEL[r]) + '</option>'; }).join('');
     var accounts = B.canManageAccounts
-      ? '<section class="panel"><h3>Comptes bénévoles</h3>' +
-        '<p class="muted">Pas d\'e-mail demandé : un identifiant, un prénom affiché et un code que tu remets en main propre.</p>' +
-        state.users.map(function (x) {
-          return '<div class="row" style="border-bottom:1px solid var(--line);padding-bottom:10px"><span><strong>' + esc(x.username) + '</strong> : ' + esc(x.name) + ' <span class="muted">(' + esc(CM.ROLE_LABEL[x.role]) + ')</span></span>' +
-            '<span class="actions-row" style="margin:0"><button class="btn btn-ghost btn-sm" type="button" data-act="resetcode" data-u="' + esc(x.username) + '">Nouveau code</button>' +
-            '<button class="btn btn-danger btn-sm" type="button" data-act="deluser" data-u="' + esc(x.username) + '">Supprimer</button></span></div>';
-        }).join('') +
-        '<h4 style="margin:20px 0 10px">Ajouter un compte</h4>' +
-        '<form class="form" data-form="user"><div class="grid2"><label><span class="req">Identifiant</span><input name="username" required autocapitalize="none"></label>' +
-        '<label><span class="req">Prénom affiché</span><input name="name" required></label></div>' +
+      ? '<section class="panel"><h3>Gestion des comptes</h3>' +
+        '<p class="muted">Création et gestion réservées au président et aux administrateurs. Le mot de passe provisoire doit être transmis individuellement au bénévole.</p>' +
+        (state.users.length ? state.users.map(function (x) {
+          return '<div class="row" style="border-bottom:1px solid var(--line);padding:10px 0"><span><strong>' + esc(x.username) + '</strong> : ' + esc(x.name) + ' <span class="muted">(' + esc(CM.ROLE_LABEL[x.role]) + (x.is_active === false ? ' · désactivé' : '') + ')</span></span>' +
+            '<span class="actions-row" style="margin:0"><button class="btn btn-ghost btn-sm" type="button" data-act="edituser" data-u="' + esc(x.username) + '">Modifier</button>' +
+            '<button class="btn btn-ghost btn-sm" type="button" data-act="resetcode" data-u="' + esc(x.username) + '">' + (x.is_active === false ? 'Réactiver et réinitialiser' : 'Réinitialiser le mot de passe') + '</button>' +
+            (x.is_active === false ? '' : '<button class="btn btn-danger btn-sm" type="button" data-act="deluser" data-u="' + esc(x.username) + '">Désactiver</button>') + '</span></div>';
+        }).join('') : '<p class="muted">Aucun compte trouvé.</p>') +
+        (state.resetTarget ? '<h4 style="margin:20px 0 10px">Nouveau mot de passe provisoire pour ' + esc(state.resetTarget) + '</h4>' +
+          '<form class="form" data-form="resetpassword"><label><span class="req">Nouveau mot de passe (12 caractères minimum)</span><input name="code" type="password" required minlength="12" autocomplete="new-password"></label>' +
+          '<div class="actions-row"><button class="btn btn-sm" type="submit">Valider le nouveau mot de passe</button><button class="btn btn-ghost btn-sm" type="button" data-act="cancelreset">Annuler</button></div></form>' : '') +
+        '<h4 style="margin:20px 0 10px">Créer un compte</h4>' +
+        '<form class="form" data-form="user"><div class="grid2"><label><span class="req">Identifiant</span><input name="username" required autocapitalize="none" pattern="[a-zA-Z0-9._-]{2,30}"></label>' +
+        '<label><span class="req">Nom affiché</span><input name="name" required></label></div>' +
         '<div class="grid2"><label><span class="req">Rôle</span><select name="role">' + roleOpts + '</select></label>' +
-        '<label><span class="req">Code (6 caractères minimum)</span><input name="code" type="text" required minlength="6" autocomplete="off"></label></div>' +
+        '<label><span class="req">Mot de passe provisoire (12 caractères minimum)</span><input name="code" type="password" required minlength="12" autocomplete="new-password"></label></div>' +
         '<div><button class="btn btn-sm" type="submit">Créer le compte</button></div></form></section>'
-      : '<section class="panel"><h3>Comptes bénévoles</h3><p class="muted">En mode Supabase, les comptes se créent dans le tableau de bord Supabase (voir README, étape « Créer les comptes »).</p></section>';
+      : '';
 
     var reset = B.mode === 'demo'
       ? '<section class="panel"><h3>Données de démonstration</h3><p class="muted">Efface toutes les données de ce navigateur et recrée les comptes d\'exemple.</p><button class="btn btn-danger btn-sm" type="button" data-act="resetdemo">Réinitialiser la démo</button></section>' : '';
@@ -242,11 +258,19 @@
       else if (act === 'allmonth') { state.sel = null; paint(); }
       else if (act === 'unreg') { await B.removeRegistration(t.dataset.event); CM.toast('Désinscription enregistrée.'); await refresh(); }
       else if (act === 'delevent') { if (confirm('Supprimer cet événement et ses inscriptions ?')) { await B.deleteEvent(t.dataset.id); await refresh(); } }
-      else if (act === 'deluser') { if (confirm('Supprimer le compte « ' + t.dataset.u + ' » ?')) { await B.deleteUser(t.dataset.u); await refresh(); } }
-      else if (act === 'resetcode') {
-        var c = prompt('Nouveau code pour « ' + t.dataset.u + ' » (6 caractères minimum) :');
-        if (c) { await B.resetCode(t.dataset.u, c); CM.toast('Code modifié.'); }
+      else if (act === 'deluser') { if (confirm('Désactiver le compte « ' + t.dataset.u + ' » ? La personne ne pourra plus se connecter.')) { await B.deleteUser(t.dataset.u); CM.toast('Compte désactivé.'); await refresh(); } }
+      else if (act === 'edituser') {
+        var target = state.users.find(function (x) { return x.username === t.dataset.u; });
+        if (target) {
+          var newName = prompt('Nom affiché :', target.name); if (newName === null) return;
+          var roleChoices = B.user().role === 'president' ? B.ROLES : ['benevole','photographe','admin'];
+          var newRole = prompt('Rôle (' + roleChoices.join(', ') + ') :', target.role); if (newRole === null) return;
+          await B.updateUser({ username: target.username, display_name: newName.trim(), role: newRole });
+          CM.toast('Compte mis à jour.'); await refresh();
+        }
       }
+      else if (act === 'resetcode') { state.resetTarget = t.dataset.u; paint(); }
+      else if (act === 'cancelreset') { state.resetTarget = null; paint(); }
       else if (act === 'resetdemo') { if (confirm('Effacer toutes les données de démonstration ?')) { await B.resetDemo(); } }
       else if (act === 'editfiche') { state.editFiche = state.fiches.find(function (f) { return f.id === t.dataset.id; }); paint(); window.scrollTo({ top: root.offsetTop - 90, behavior: 'smooth' }); }
       else if (act === 'newfiche') { state.editFiche = null; paint(); }
@@ -264,7 +288,12 @@
       fd[el.name] = el.type === 'checkbox' ? el.checked : el.value;
     });
     try {
-      if (kind === 'reg') { await B.setRegistration(form.dataset.event, fd.note.trim()); CM.toast('Inscription enregistrée.'); }
+      if (kind === 'changepassword') {
+        if (fd.newPassword !== fd.confirmPassword) throw new Error('Les deux nouveaux mots de passe ne correspondent pas.');
+        await B.changeOwnPassword(fd.currentPassword, fd.newPassword); CM.toast('Mot de passe modifié.');
+        await renderEspace(); return;
+      }
+      else if (kind === 'reg') { await B.setRegistration(form.dataset.event, fd.note.trim()); CM.toast('Inscription enregistrée.'); }
       else if (kind === 'event') {
         await B.createEvent({ date: fd.date, time: fd.time, kind: fd.kind, title: fd.title.trim(), place: fd.place.trim(), capacity: parseInt(fd.capacity, 10) || null, description: fd.description.trim() });
         CM.toast('Événement ajouté.');
@@ -282,6 +311,7 @@
         CM.toast(n + ' maraude(s) créée(s).');
       }
       else if (kind === 'user') { await B.createUser({ username: fd.username, name: fd.name.trim(), role: fd.role, code: fd.code }); CM.toast('Compte créé.'); }
+      else if (kind === 'resetpassword') { await B.resetCode(state.resetTarget, fd.code); state.resetTarget = null; CM.toast('Mot de passe provisoire enregistré.'); }
       else if (kind === 'fiche') {
         var base = state.editFiche ? { id: state.editFiche.id } : {};
         var photo = state.editFiche && state.editFiche.photo || '';
