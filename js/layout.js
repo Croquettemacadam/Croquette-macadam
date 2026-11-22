@@ -258,7 +258,6 @@
     var L = C.legal;
     var lines = [
       L.name + ' – ' + L.form,
-      L.address,
       'Contact : ' + L.email,
       'Responsable de publication : ' + L.publicationDirector,
       'RNA : ' + L.rna + ' · SIRET : ' + L.siret,
