@@ -203,11 +203,13 @@ window.SITE_CONTENT = {
      credit: "Crédit photo : [Pauline Gobin](https://polinefolio.framer.website/)",
     host: "Site hébergé par GitHub Pages.",
     privacy: [
-      "Les informations saisies dans le formulaire de contact (nom, prénom, adresse e-mail, téléphone, message) sont utilisées uniquement pour répondre à votre demande. Elles ne sont ni vendues ni transmises à des tiers.",
-      "Elles sont conservées le temps nécessaire au traitement de votre demande, puis supprimées (durée à préciser).",
-      "Vous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à l'adresse de contact ci-dessus.",
-      "Les comptes bénévoles contiennent un identifiant et un prénom. Les fiches des animaux et de leurs maîtres sont visibles en lecture par les bénévoles connectés et ne peuvent être modifiées que par la présidence.",
-      "La vidéo de présentation est hébergée par YouTube (mode confidentialité renforcée) : le lecteur ne se charge qu'au clic, mais l'image d'aperçu est fournie par YouTube. La boutique, si elle est ouverte, est gérée par un service tiers avec ses propres conditions."
+      "Le responsable du traitement des données personnelles collectées sur ce site est l'association Croquette & Macadam (SIRET : 841 629 033 00017 / RNA : W332023358).", 
+       "Toutes les données collectées via le formulaire de contact sont utilisées uniquement pour répondre à vos demandes d'informations, d'aide ou de prise de contact avec l'association. Elles ne sont ni vendues, ni cédées, ni transmises à des tiers à des fins commerciales. Elles sont uniquement réserves aux membres habilités de l'association et aus prestataires techniques nécessaires au fonctionnement du site.",
+       "Les messages sont automatiquement transmis et traités via la messagerie électronique de l'association. Ils sont conservés pendant la durée nécessaire au traitement de votre demande, puis supprimés dans un délai maximum de 12 mois à compter du dernier échange.",
+       "Vous pouvez demander l'accès, la rectification, la limitation, ou la suppression de vos données en écrivant à l'adresse mail croquette.macadam@gmail.com conformément au Réglement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.",
+       "Hébergement du site : GitHub Pages (GitHub, Inc/Microsoft).",
+       "Messagerie électronique : Gmail (Google Ireland Limited/Google LLC) pour la réception et la traitement des messages envoyés via le fomrulaire.",
+       "Note sur les transferts hors Union Européenne : L'utilisation des services de GitHub et Google peut impliquer un transfert de données techniques ou de correspondances vers les Etats-Unis. Ces prestataires encadrent ces transferts par des clauses contractuelles types et le cadre de protection des données UE-Etats-Unis (Data Privacy Framework)."
     ]
   }
 };
