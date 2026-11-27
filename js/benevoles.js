@@ -15,10 +15,24 @@
     return '<article class="card team-card">' + CM.photoFigure(p.photo, { shape: 'circle', ratio: '1 / 1' }) +
       '<div class="card-body"><h3>' + esc(p.name) + '</h3><p class="role">' + esc(p.role) + '</p><p>' + esc(p.text) + '</p></div></article>';
   }).join('');
-  document.getElementById('forums-root').innerHTML = BC.events.map(function (e) {
-    return '<article class="card">' + CM.photoFigure(e.photo, { ratio: '16 / 10' }) +
-      '<div class="card-body"><p class="date">' + esc(e.date) + '</p><h3>' + esc(e.title) + '</h3><p class="place">' + esc(e.place) + '</p><p>' + esc(e.text) + '</p></div></article>';
-  }).join('');
+  var forumsRoot = document.getElementById('forums-root');
+  function renderFeaturedEvent(e) {
+    if (!e) {
+      forumsRoot.innerHTML = BC.events.map(function (x) {
+        return '<article class="card">' + CM.photoFigure(x.photo, { ratio: '16 / 10' }) +
+          '<div class="card-body"><p class="date">' + esc(x.date) + '</p><h3>' + esc(x.title) + '</h3><p class="place">' + esc(x.place) + '</p><p>' + esc(x.text) + '</p></div></article>';
+      }).join('');
+      return;
+    }
+    var photo = e.photo_url ? {src:e.photo_url,alt:e.title,ratio:'16 / 10'} : null;
+    forumsRoot.innerHTML = '<article class="card">' + (photo ? CM.photoFigure(photo,{ratio:'16 / 10'}) : '') +
+      '<div class="card-body"><p class="date">' + esc(CM.fmtDate(e.date)) + '</p><h3>' + esc(e.title) +
+      '</h3><p class="place">' + esc(e.place || '') + '</p><p>' + esc(e.description || '') + '</p></div></article>';
+  }
+  renderFeaturedEvent(null);
+  CM.ready.then(function(){ return B.getFeaturedEvent(); }).then(function(e){
+    if (e) renderFeaturedEvent(e);
+  }).catch(function(e){ console.error('Événement mis en avant :',e); });
 
   /* ---------- Chargement des données selon l'onglet ---------- */
   async function loadTab() {
