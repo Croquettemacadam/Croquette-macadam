@@ -88,7 +88,7 @@
       }
       var f = new Date(); f.setDate(f.getDate() + 20);
       events.push({ id: uid(), date: ymd(f), time: '10:00', kind: 'evenement', title: 'Collecte de croquettes (exemple)', place: 'À préciser', capacity: null, description: 'Exemple de démonstration.' });
-      db = { users: users, events: events, regs: [], maraudes: [], fiches: [] };
+      db = { users: users, events: events, regs: [], maraudes: [], fiches: [], impactReports: [], featuredEvent: null };
       persist();
     }
 
@@ -96,6 +96,8 @@
       async init() {
         try { db = JSON.parse(localStorage.getItem(DB)); } catch (e) { db = null; }
         if (!db) await seed();
+        if (!db.impactReports) db.impactReports = [];
+        if (typeof db.featuredEvent === 'undefined') db.featuredEvent = null;
         var s = sessionStorage.getItem(SES);
         var u = s && db.users.find(function (x) { return x.username === s; });
         me = u ? pub(u) : null;
@@ -155,6 +157,30 @@
         need('photographe', 'admin', 'president');
         db.maraudes = db.maraudes.filter(function (x) { return x.id !== id; });
         persist();
+      },
+      async listImpactReports(year) {
+        return db.impactReports.filter(function (x) { return !year || String(x.date).slice(0, 4) === String(year); })
+          .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+      },
+      async saveImpactReport(report) {
+        need('admin', 'president');
+        var row = { id: report.id || uid(), date: report.date, maraudes_count: Number(report.maraudes_count == null ? 1 : report.maraudes_count), kibble_kg: Number(report.kibble_kg || 0),
+          leashes: Number(report.leashes || 0), harnesses: Number(report.harnesses || 0),
+          toys: Number(report.toys || 0), updated_at: new Date().toISOString() };
+        var i = db.impactReports.findIndex(function (x) { return x.id === row.id; });
+        if (i >= 0) db.impactReports[i] = row; else db.impactReports.push(row);
+        persist();
+      },
+      async getFeaturedEvent() { return db.featuredEvent; },
+      async saveFeaturedEvent(event) {
+        need('photographe', 'admin', 'president');
+        db.featuredEvent = { date: event.date, title: event.title, place: event.place,
+          description: event.description || '', photo_url: event.photo_url || '', updated_at: new Date().toISOString() };
+        persist();
+      },
+      async uploadSitePhoto(file) {
+        need('photographe', 'admin', 'president');
+        return blobToDataUrl(await compressImage(file, 1600, 0.82));
       },
       async uploadPhoto(file) {
         need('photographe', 'admin', 'president');
@@ -276,7 +302,35 @@
         else ck(await sb.from('maraudes').insert(row));
       },
       async deleteMaraude(id) { ck(await sb.from('maraudes').delete().eq('id', id)); },
-      async uploadPhoto(file) {
+            async listImpactReports(year) {
+        var q = sb.from('impact_reports').select('*').order('date', { ascending: false });
+        if (year) q = q.gte('date', String(year) + '-01-01').lte('date', String(year) + '-12-31');
+        return ck(await q);
+      },
+      async saveImpactReport(report) {
+        var row = { date: report.date, maraudes_count: Number(report.maraudes_count == null ? 1 : report.maraudes_count), kibble_kg: Number(report.kibble_kg || 0),
+          leashes: Number(report.leashes || 0), harnesses: Number(report.harnesses || 0),
+          toys: Number(report.toys || 0), updated_at: new Date().toISOString() };
+        if (report.id) ck(await sb.from('impact_reports').update(row).eq('id', report.id));
+        else ck(await sb.from('impact_reports').insert(row));
+      },
+      async getFeaturedEvent() {
+        var r = await sb.from('featured_event').select('*').eq('id', 1).maybeSingle();
+        return ck(r);
+      },
+      async saveFeaturedEvent(event) {
+        ck(await sb.from('featured_event').upsert({ id: 1, date: event.date, title: event.title,
+          place: event.place, description: event.description || '', photo_url: event.photo_url || '',
+          updated_at: new Date().toISOString() }, { onConflict: 'id' }));
+      },
+      async uploadSitePhoto(file) {
+        var blob = await compressImage(file, 1800, 0.84);
+        var path = 'featured-event/' + Date.now() + '-' + Math.random().toString(36).slice(2, 9) + '.jpg';
+        ck(await sb.storage.from('site-media').upload(path, blob, { contentType: 'image/jpeg', upsert: false }));
+        return sb.storage.from('site-media').getPublicUrl(path).data.publicUrl;
+      },
+
+async uploadPhoto(file) {
         var blob = await compressImage(file, 1600, 0.8);
         var path = Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
         ck(await sb.storage.from(CFG.photoBucket).upload(path, blob, { contentType: 'image/jpeg' }));
