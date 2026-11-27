@@ -193,11 +193,12 @@
       ['Contact', link('#contact'), 'contact'],
       ['Maraudes', 'maraudes.html', 'maraudes'],
       ['Boutique', 'boutique.html', 'boutique'],
-      ['Bénévoles', 'benevoles.html', 'benevoles']
+      ['Bénévoles', 'benevoles.html', 'benevoles'],
+      ['Gestion', 'gestion.html', 'gestion']
     ];
     if (!(C.shop && C.shop.visible)) items = items.filter(function (it) { return it[2] !== 'boutique'; });
     var lis = items.map(function (it) {
-      return '<li><a href="' + it[1] + '" data-spy="' + it[2] + '"' + (current === it[2] ? ' aria-current="page"' : '') + '>' + it[0] + '</a></li>';
+      return '<li' + (it[2] === 'gestion' ? ' id="management-nav" hidden' : '') + '><a href="' + it[1] + '" data-spy="' + it[2] + '"' + (current === it[2] ? ' aria-current="page"' : '') + '>' + it[0] + '</a></li>';
     }).join('');
     host.innerHTML =
       '<div class="bar">' +
@@ -248,6 +249,8 @@
     slot.innerHTML = u
       ? '<span class="user-chip" title="' + esc(ROLE_LABEL[u.role] || '') + '">' + esc(u.name) + '</span><button class="btn btn-ghost btn-sm" type="button" data-logout>Déconnexion</button>'
       : '<button class="btn btn-ghost btn-sm" type="button" data-login>Connexion</button>';
+    var management = document.getElementById('management-nav');
+    if (management) management.hidden = !(u && ['president', 'admin', 'photographe'].indexOf(u.role) >= 0);
   }
 
   /* ---------- Pied de page ---------- */
