@@ -311,8 +311,11 @@
         var row = { date: report.date, maraudes_count: Number(report.maraudes_count == null ? 1 : report.maraudes_count), kibble_kg: Number(report.kibble_kg || 0),
           leashes: Number(report.leashes || 0), harnesses: Number(report.harnesses || 0),
           toys: Number(report.toys || 0), updated_at: new Date().toISOString() };
-        if (report.id) ck(await sb.from('impact_reports').update(row).eq('id', report.id));
-        else ck(await sb.from('impact_reports').insert(row));
+        var res = report.id
+          ? await sb.from('impact_reports').update(row).eq('id', report.id).select()
+          : await sb.from('impact_reports').insert(row).select();
+        var saved = ck(res);
+        if (!saved || !saved.length) throw new Error('Enregistrement refusé par Supabase : vérifie que la migration SQL a été exécutée et que ton compte est bien Président ou Administrateur.');
       },
       async getFeaturedEvent() {
         var r = await sb.from('featured_event').select('*').eq('id', 1).maybeSingle();
