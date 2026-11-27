@@ -26,10 +26,8 @@
   /* Compteurs annuels : somme des bilans de maraudes enregistrés dans Supabase. */
   var counters = document.getElementById('impact-counters');
   if (counters) {
-    var impactYear = 2025;
+    var impactYear = new Date().getFullYear();
     var titleNode = document.querySelector('#impact h2');
-    var yearMatch = String(C.impact.title || '').match(/(20\d{2})/);
-    if (yearMatch) impactYear = Number(yearMatch[1]);
     var yearPicker = document.createElement('label');
     yearPicker.className = 'impact-year-picker';
     yearPicker.innerHTML = 'Année <select aria-label="Année du bilan"></select>';
