@@ -293,3 +293,7 @@ dialog.lightbox button { margin: 10px auto 0; display: block; background: #fff; 
 
 .photo-sale { display: flex; flex-direction: column; }
 .photo-sale > .btn { align-self: center; margin-top: 28px; }
+
+/* Sélecteur de l'année du compteur d'impact */
+.impact-year-picker { display:inline-flex; align-items:center; gap:10px; margin:4px 0 16px; font-weight:600; }
+.impact-year-picker select { border:1px solid #c9cbd0; border-radius:9px; padding:7px 10px; font:inherit; background:#fff; color:inherit; }
