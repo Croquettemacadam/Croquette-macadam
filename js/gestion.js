@@ -87,7 +87,7 @@
         var vals={id:f.elements.id.value||null,date:f.elements.date.value,maraudes_count:f.elements.maraudes_count.value,kibble_kg:f.elements.kibble_kg.value,
           leashes:f.elements.leashes.value,harnesses:f.elements.harnesses.value,toys:f.elements.toys.value};
         await B.saveImpactReport(vals); state.year=Number(vals.date.slice(0,4)); state.edit=null; CM.toast('Bilan enregistré. Les totaux sont recalculés.'); await refreshImpact();
-      } catch(e){st.textContent=e.message;btn.disabled=false;}
+      } catch(e){st.textContent=e.message;CM.toast('Erreur : '+e.message);console.error(e);btn.disabled=false;}
     }
     if(ev.target.id==='event-form'){
       ev.preventDefault(); var form=ev.target, status=document.getElementById('event-status'), button=form.querySelector('[type=submit]'); button.disabled=true;
@@ -99,7 +99,7 @@
         await B.saveFeaturedEvent({date:form.elements.date.value,title:form.elements.title.value.trim(),place:form.elements.place.value.trim(),
           description:form.elements.description.value.trim(),photo_url:photo});
         state.photo=''; CM.toast('Événement mis à jour.'); await load();
-      }catch(e){status.textContent=e.message;button.disabled=false;}
+      }catch(e){status.textContent=e.message;CM.toast('Erreur : '+e.message);console.error(e);button.disabled=false;}
     }
   });
   window.addEventListener('cm:auth',function(){state.edit=null;load().catch(function(e){root.innerHTML='<div class="notice err">'+esc(e.message)+'</div>';});});
