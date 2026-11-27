@@ -45,7 +45,7 @@
       '<div class="gestion-grid"><label>Année affichée<select id="impact-year">'+Array.from({length:8},function(_,i){return new Date().getFullYear()+1-i;}).map(function(y){return '<option value="'+y+'" '+(y===Number(state.year)?'selected':'')+'>'+y+'</option>';}).join('')+'</select></label>'+
       '<div><strong>Totaux enregistrés en '+state.year+'</strong><p class="gestion-help">'+n(totals.maraudes)+' maraudes · '+n(totals.kg)+' kg · '+n(totals.leashes)+' laisses · '+n(totals.harnesses)+' harnais · '+n(totals.toys)+' jouets</p></div></div></section>'+
       '<section class="gestion-panel"><h2>'+(edit.id?'Corriger un bilan':'Ajouter le bilan d’une maraude')+'</h2>'+
-      '<form class="gestion-form" id="impact-form"><input type="hidden" name="id" value="'+esc(edit.id||'')+'">'+
+      '<form class="gestion-form" id="impact-form"><input type="hidden" name="report_id" value="'+esc(edit.id||'')+'">'+
       '<div class="gestion-grid"><label>Date de la maraude / période<input type="date" name="date" required value="'+esc(edit.date||today())+'"></label><label>Nombre de maraudes couvertes<input type="number" name="maraudes_count" min="0" step="1" value="'+esc(edit.maraudes_count==null?'1':edit.maraudes_count)+'" required></label>'+
       '<label>Croquettes distribuées (kg)<input type="number" name="kibble_kg" min="0" step="any" value="'+esc(edit.kibble_kg==null?'0':edit.kibble_kg)+'" required></label>'+
       '<label>Laisses distribuées<input type="number" name="leashes" min="0" step="1" value="'+esc(edit.leashes==null?'0':edit.leashes)+'" required></label>'+
@@ -82,15 +82,15 @@
     if(ev.target.id==='impact-year'){state.year=Number(ev.target.value);state.edit=null;try{await refreshImpact();}catch(e){CM.toast(e.message);}}
   });
   root.addEventListener('submit',async function(ev){
-    if(ev.target.id==='impact-form'){
+    if(ev.target.matches('#impact-form')){
       ev.preventDefault(); var f=ev.target, st=document.getElementById('impact-status'), btn=f.querySelector('[type=submit]'); btn.disabled=true;
       try {
-        var vals={id:f.elements.id.value||null,date:f.elements.date.value,maraudes_count:f.elements.maraudes_count.value,kibble_kg:f.elements.kibble_kg.value,
+        var vals={id:f.elements.report_id.value||null,date:f.elements.date.value,maraudes_count:f.elements.maraudes_count.value,kibble_kg:f.elements.kibble_kg.value,
           leashes:f.elements.leashes.value,harnesses:f.elements.harnesses.value,toys:f.elements.toys.value};
         state.lastSave='envoi…'; await B.saveImpactReport(vals); state.lastSave='OK à '+new Date().toLocaleTimeString('fr-FR'); state.year=Number(vals.date.slice(0,4)); state.edit=null; CM.toast('Bilan enregistré. Les totaux sont recalculés.'); await refreshImpact();
       } catch(e){state.lastSave='ÉCHEC'; st.innerHTML='<strong style="color:#b00020">Échec : '+esc(e.message)+'</strong>';alert('Le bilan n’a PAS été enregistré :\n'+e.message);CM.toast('Erreur : '+e.message);console.error(e);btn.disabled=false;}
     }
-    if(ev.target.id==='event-form'){
+    if(ev.target.matches('#event-form')){
       ev.preventDefault(); var form=ev.target, status=document.getElementById('event-status'), button=form.querySelector('[type=submit]'); button.disabled=true;
       try {
         var photo=state.photo || (state.event&&state.event.photo_url) || '';
