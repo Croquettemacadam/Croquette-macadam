@@ -23,13 +23,51 @@
     videoRoot.querySelector('.video-card').addEventListener('click', function () { CM.openVideo(V.id, V.title); });
   }
 
-  /* Compteurs */
+  /* Compteurs annuels : somme des bilans de maraudes enregistrés dans Supabase. */
   var counters = document.getElementById('impact-counters');
   if (counters) {
-    counters.innerHTML = C.impact.counters.map(function (c) {
-      return '<div class="counter"><span class="num" data-count="' + Number(c.value) + '">0</span><span class="lab">' + esc(c.label) + '</span></div>';
-    }).join('');
-    CM.animateCounters();
+    var impactYear = 2025;
+    var titleNode = document.querySelector('#impact h2');
+    var yearMatch = String(C.impact.title || '').match(/(20\d{2})/);
+    if (yearMatch) impactYear = Number(yearMatch[1]);
+    var yearPicker = document.createElement('label');
+    yearPicker.className = 'impact-year-picker';
+    yearPicker.innerHTML = 'Année <select aria-label="Année du bilan"></select>';
+    var select = yearPicker.querySelector('select');
+    for (var yy = new Date().getFullYear() + 1; yy >= 2025; yy--) {
+      var opt = document.createElement('option'); opt.value = yy; opt.textContent = yy;
+      if (yy === impactYear) opt.selected = true; select.appendChild(opt);
+    }
+    counters.parentNode.insertBefore(yearPicker, counters);
+    async function loadImpactYear() {
+      var year = Number(select.value);
+      if (titleNode) titleNode.textContent = 'Notre impact en ' + year;
+      counters.innerHTML = '<p class="muted">Chargement des chiffres…</p>';
+      try {
+        await CM.ready;
+        var reports = await window.Backend.listImpactReports(year);
+        var total = reports.reduce(function (a, r) {
+          a.maraudes += Number(r.maraudes_count == null ? 1 : r.maraudes_count); a.kg += Number(r.kibble_kg || 0); a.leashes += Number(r.leashes || 0);
+          a.harnesses += Number(r.harnesses || 0); a.toys += Number(r.toys || 0); return a;
+        }, {maraudes:0,kg:0,leashes:0,harnesses:0,toys:0});
+        var values = [
+          {value:total.maraudes,label:'maraudes réalisées'},
+          {value:total.kg,label:'kg de croquettes distribués'},
+          {value:total.leashes,label:'laisses distribuées'},
+          {value:total.harnesses,label:'harnais distribués'},
+          {value:total.toys,label:'jouets distribués'}
+        ];
+        counters.innerHTML = values.map(function(c){
+          return '<div class="counter"><span class="num" data-count="'+Number(c.value)+'">0</span><span class="lab">'+esc(c.label)+'</span></div>';
+        }).join('');
+        CM.animateCounters(counters);
+      } catch (e) {
+        counters.innerHTML = '<p class="muted">Les chiffres annuels ne sont pas disponibles pour le moment.</p>';
+        console.error(e);
+      }
+    }
+    select.addEventListener('change', loadImpactYear);
+    loadImpactYear();
   }
 
   /* Formulaire de contact */
