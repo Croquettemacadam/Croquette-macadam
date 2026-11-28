@@ -17,7 +17,7 @@
     note.innerHTML = '<div class="notice shop-note"><strong>La boutique en ligne ouvre bientôt.</strong> En attendant, tu peux déjà découvrir les articles prévus.</div>';
   }
 
-  document.getElementById('shop-root').innerHTML = (S.items || []).map(function (it) {
+  function renderItems() { document.getElementById('shop-root').innerHTML = (S.items || []).map(function (it) {
     var url = String(it.url || shopUrl || '').trim();
     if (url && !/^https?:\/\//i.test(url)) url = '';
     var btn = url
@@ -27,7 +27,9 @@
       '<div class="card-body"><h3>' + esc(it.name) + '</h3>' +
       (it.price ? '<p class="price">' + esc(it.price) + '</p>' : '') +
       '<p>' + esc(it.text || '') + '</p>' + btn + '</div></article>';
-  }).join('');
+  }).join(''); }
+  renderItems();
+  window.addEventListener('cm:photos', renderItems);
 
   /* Espace « vente de photos » : présentation + lien vers la page où la vente est gérée */
   var PS = S.photoSale;
@@ -42,5 +44,9 @@
       (psUrl ? '<a class="btn" href="' + esc(psUrl) + '" target="_blank" rel="noopener">' + esc(PS.buttonLabel || 'Voir les photos') + '</a>'
              : '<span class="btn" aria-disabled="true">Bientôt disponible</span>');
     document.getElementById('shop-root').insertAdjacentElement('afterend', host);
+    window.addEventListener('cm:photos', function () {
+      var g = host.querySelector('.photos-grid');
+      if (g) g.innerHTML = (PS.photos || []).map(function (p) { return CM.photoFigure(p, { ratio: '4 / 3' }); }).join('');
+    });
   }
 })();

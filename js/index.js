@@ -5,10 +5,12 @@
 
   /* Actions */
   var actionsList = document.getElementById('actions-list');
-  if (actionsList) actionsList.innerHTML = C.actions.items.map(function (a) {
+  function renderActions() { if (actionsList) actionsList.innerHTML = C.actions.items.map(function (a) {
     return '<article class="card">' + CM.photoFigure(a.photo, { ratio: '4 / 3' }) +
       '<div class="card-body"><h3>' + esc(a.title) + '</h3><p>' + esc(a.text) + '</p></div></article>';
-  }).join('');
+  }).join(''); }
+  renderActions();
+  window.addEventListener('cm:photos', renderActions);
 
   /* Vidéo : miniature + lecture en grand au clic */
   var V = C.mission.video;

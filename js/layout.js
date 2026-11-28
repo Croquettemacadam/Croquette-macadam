@@ -381,6 +381,65 @@
     gc.dataset.goatcounter = 'https://' + CFG.goatcounterCode + '.goatcounter.com/count';
     gc.src = 'https://gc.zgo.at/count.js'; document.head.appendChild(gc);
   }
+  /* ---------- Photos remplaçables depuis l'espace Gestion ----------
+     Table "site_photos" : chaque photo d'origine (son chemin dans content.js) peut être remplacée
+     par une autre adresse. On garde une copie du contenu d'origine pour pouvoir revenir en arrière. */
+  var ORIG = JSON.parse(JSON.stringify(C));
+  var PHOTO_CACHE = 'cm_site_photos';
+  var photoMap = {};
+  var PHOTO_SLOTS = [];
+
+  function photoLabel(p) {
+    var o = ORIG, n = function (i) { return Number(i) + 1; };
+    try {
+      if (p[0] === 'hero') return 'Accueil · photo de fond du bandeau';
+      if (p[0] === 'mission') return 'Mission · photo ' + n(p[2]);
+      if (p[0] === 'actions') return 'Actions · ' + o.actions.items[p[2]].title;
+      if (p[0] === 'impact') return 'Impact · photo ' + n(p[2]);
+      if (p[0] === 'shop' && p[1] === 'photoSale') return 'Boutique · photo à vendre ' + n(p[3]);
+      if (p[0] === 'shop') return 'Boutique · ' + o.shop.items[p[2]].name;
+      if (p[0] === 'maraudes') { var e = o.maraudes.entries[p[2]]; return 'Maraudes · ' + (e.title || '') + ' (' + e.date + ') – photo ' + n(p[4]); }
+      if (p[0] === 'benevoles' && p[1] === 'team') return 'Équipe · ' + o.benevoles.team[p[2]].name;
+      if (p[0] === 'benevoles' && p[1] === 'events') return 'Où nous retrouver · ' + o.benevoles.events[p[2]].title;
+    } catch (err) { /* libellé générique ci-dessous */ }
+    return p.join(' › ');
+  }
+  /* Parcourt le contenu d'origine (o) et le contenu affiché (c) en parallèle ; fn est appelé pour chaque photo. */
+  function walkPhotos(o, c, path, fn) {
+    if (!o || typeof o !== 'object' || !c) return;
+    Object.keys(o).forEach(function (k) {
+      var v = o[k], p = path.concat(k);
+      if ((k === 'src' || k === 'background') && typeof v === 'string' && v) fn(o, c, k, v, p);
+      else if (v && typeof v === 'object' && k !== 'legal') walkPhotos(v, c[k], p, fn);
+    });
+  }
+  (function () {
+    var seen = {};
+    walkPhotos(ORIG, C, [], function (o, c, k, v, p) {
+      if (seen[v]) return;
+      seen[v] = true;
+      PHOTO_SLOTS.push({ src: v, label: photoLabel(p), alt: o.alt || '' });
+    });
+  })();
+  function applyPhotos(map) {
+    photoMap = {};
+    Object.keys(map || {}).forEach(function (k) {
+      if (/^(https:\/\/|data:image\/)/.test(String(map[k]))) photoMap[k] = map[k];
+    });
+    walkPhotos(ORIG, C, [], function (o, c, k, v) { c[k] = photoMap[v] || v; });
+  }
+  function loadPhotos() {
+    if (!B.listSitePhotos) return Promise.resolve();
+    return B.listSitePhotos().then(function (map) {
+      var before = JSON.stringify(photoMap);
+      applyPhotos(map);
+      if (B.mode === 'supabase') { try { localStorage.setItem(PHOTO_CACHE, JSON.stringify(photoMap)); } catch (err) { /* cache facultatif */ } }
+      if (JSON.stringify(photoMap) !== before) { bind(); window.dispatchEvent(new Event('cm:photos')); }
+    }).catch(function (err) { console.warn('Photos du site :', err.message); });
+  }
+  /* Dernières photos connues (mode Supabase) : évite de voir l'ancienne photo clignoter avant la nouvelle. */
+  if (B.mode === 'supabase') { try { applyPhotos(JSON.parse(localStorage.getItem(PHOTO_CACHE) || '{}')); } catch (err) { /* ignoré */ } }
+
   renderHeader();
   renderFooter();
   bind();
@@ -392,13 +451,14 @@
     if (out) B.logout().then(function () { toast('Déconnecté.'); });
   });
 
-  var ready = B.init().catch(function (e) { console.error(e); window.CM.initError = e; });
+  var ready = B.init().catch(function (e) { console.error(e); window.CM.initError = e; }).then(loadPhotos);
   B.onChange(function () { renderAuth(); window.dispatchEvent(new Event('cm:auth')); });
   ready.then(renderAuth);
 
   window.CM = {
     C: C, CFG: CFG, esc: esc, rich: rich, get: get, photoFigure: photoFigure, collage: collage, fmtDate: fmtDate, bind: bind,
     animateCounters: animateCounters, toast: toast, openLogin: openLogin, openVideo: openVideo, demoNotice: demoNotice,
-    ROLE_LABEL: ROLE_LABEL, ready: ready, initError: null
+    ROLE_LABEL: ROLE_LABEL, ready: ready, initError: null,
+    photoSlots: PHOTO_SLOTS, photoMap: function () { return photoMap; }, refreshPhotos: loadPhotos
   };
 })();

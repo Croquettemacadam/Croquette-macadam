@@ -88,7 +88,7 @@
       }
       var f = new Date(); f.setDate(f.getDate() + 20);
       events.push({ id: uid(), date: ymd(f), time: '10:00', kind: 'evenement', title: 'Collecte de croquettes (exemple)', place: 'À préciser', capacity: null, description: 'Exemple de démonstration.' });
-      db = { users: users, events: events, regs: [], maraudes: [], fiches: [], impactReports: [], featuredEvent: null };
+      db = { users: users, events: events, regs: [], maraudes: [], fiches: [], impactReports: [], featuredEvent: null, sitePhotos: {} };
       persist();
     }
 
@@ -98,6 +98,7 @@
         if (!db) await seed();
         if (!db.impactReports) db.impactReports = [];
         if (typeof db.featuredEvent === 'undefined') db.featuredEvent = null;
+        if (!db.sitePhotos) db.sitePhotos = {};
         var s = sessionStorage.getItem(SES);
         var u = s && db.users.find(function (x) { return x.username === s; });
         me = u ? pub(u) : null;
@@ -176,6 +177,17 @@
         need('photographe', 'admin', 'president');
         db.featuredEvent = { date: event.date, title: event.title, place: event.place,
           description: event.description || '', photo_url: event.photo_url || '', updated_at: new Date().toISOString() };
+        persist();
+      },
+      async listSitePhotos() { return Object.assign({}, db.sitePhotos); },
+      async saveSitePhoto(src, url) {
+        need('photographe', 'admin', 'president');
+        db.sitePhotos[src] = url;
+        persist();
+      },
+      async resetSitePhoto(src) {
+        need('photographe', 'admin', 'president');
+        delete db.sitePhotos[src];
         persist();
       },
       async uploadSitePhoto(file) {
@@ -326,9 +338,25 @@
           place: event.place, description: event.description || '', photo_url: event.photo_url || '',
           updated_at: new Date().toISOString() }, { onConflict: 'id' }));
       },
-      async uploadSitePhoto(file) {
+      async listSitePhotos() {
+        var rows = ck(await sb.from('site_photos').select('src,url'));
+        var map = {};
+        (rows || []).forEach(function (r) { map[r.src] = r.url; });
+        return map;
+      },
+      async saveSitePhoto(src, url) {
+        var res = await sb.from('site_photos').upsert({ src: src, url: url, updated_at: new Date().toISOString(), updated_by: me ? me.id : null }, { onConflict: 'src' }).select();
+        var saved = ck(res);
+        if (!saved || !saved.length) throw new Error('Enregistrement refusé par Supabase : la migration 20261128_photos_du_site.sql a-t-elle été exécutée ? Ton compte doit être Photographe, Administrateur ou Président.');
+      },
+      async resetSitePhoto(src) {
+        var res = await sb.from('site_photos').delete().eq('src', src).select();
+        var gone = ck(res);
+        if (!gone || !gone.length) throw new Error('Impossible de rétablir la photo d’origine (droits insuffisants ?).');
+      },
+      async uploadSitePhoto(file, folder) {
         var blob = await compressImage(file, 1800, 0.84);
-        var path = 'featured-event/' + Date.now() + '-' + Math.random().toString(36).slice(2, 9) + '.jpg';
+        var path = (/^[a-z0-9-]{1,30}$/.test(folder || '') ? folder : 'featured-event') + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 9) + '.jpg';
         ck(await sb.storage.from('site-media').upload(path, blob, { contentType: 'image/jpeg', upsert: false }));
         return sb.storage.from('site-media').getPublicUrl(path).data.publicUrl;
       },

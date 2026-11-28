@@ -21,3 +21,12 @@
 .gestion-empty { padding:18px; border:1px dashed #c9cbd0; border-radius:12px; color:#626b78; }
 .gestion-status { min-height:1.4em; margin:0; }
 @media(max-width:650px) { .gestion-grid,.gestion-event-preview { grid-template-columns:1fr; } .gestion-report { align-items:flex-start; flex-direction:column; } }
+
+/* Onglet « Photos du site » */
+.photo-admin-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; margin-top:16px; }
+.photo-admin-item { display:grid; grid-template-columns:110px 1fr; gap:14px; align-items:start; padding:12px; border:1px solid var(--line, #ddd); border-radius:14px; background:#fff; }
+.photo-admin-thumb { position:relative; width:110px; aspect-ratio:1/1; border-radius:10px; overflow:hidden; background:#eef1f6; display:grid; place-items:center; text-align:center; font-size:.75rem; color:#5a6b85; }
+.photo-admin-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.photo-admin-info p { margin:4px 0 8px; word-break:break-all; }
+.photo-admin-pick { cursor:pointer; }
+@media(max-width:650px) { .photo-admin-grid { grid-template-columns:1fr; } }

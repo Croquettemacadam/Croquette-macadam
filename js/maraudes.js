@@ -114,5 +114,7 @@
   document.addEventListener('click', onClick);
   document.addEventListener('submit', onSubmit);
   window.addEventListener('cm:auth', function () { editing = null; load(); });
-  CM.ready.then(load);
+  var maraudesLoaded = false;
+  window.addEventListener('cm:photos', function () { if (maraudesLoaded) render(); });
+  CM.ready.then(function () { maraudesLoaded = true; return load(); });
 })();

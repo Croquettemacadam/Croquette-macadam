@@ -11,10 +11,12 @@
   var state = { tab: 'calendrier', y: now.getFullYear(), m: now.getMonth(), sel: null, events: [], regs: [], fiches: [], users: [], editFiche: null, resetTarget: null, q: '' };
 
   /* ---------- Parties publiques ---------- */
-  document.getElementById('equipe-root').innerHTML = BC.team.map(function (p) {
+  function renderTeam() { document.getElementById('equipe-root').innerHTML = BC.team.map(function (p) {
     return '<article class="card team-card">' + CM.photoFigure(p.photo, { shape: 'circle', ratio: '1 / 1' }) +
       '<div class="card-body"><h3>' + esc(p.name) + '</h3><p class="role">' + esc(p.role) + '</p><p>' + esc(p.text) + '</p></div></article>';
-  }).join('');
+  }).join(''); }
+  renderTeam();
+  window.addEventListener('cm:photos', renderTeam);
   var forumsRoot = document.getElementById('forums-root');
   function renderFeaturedEvent(e) {
     if (!e) {
@@ -30,8 +32,10 @@
       '</h3><p class="place">' + esc(e.place || '') + '</p><p>' + esc(e.description || '') + '</p></div></article>';
   }
   renderFeaturedEvent(null);
+  var featuredNow = null;
+  window.addEventListener('cm:photos', function () { if (!featuredNow) renderFeaturedEvent(null); });
   CM.ready.then(function(){ return B.getFeaturedEvent(); }).then(function(e){
-    if (e) renderFeaturedEvent(e);
+    if (e) { featuredNow = e; renderFeaturedEvent(e); }
   }).catch(function(e){ console.error('Événement mis en avant :',e); });
 
   /* ---------- Chargement des données selon l'onglet ---------- */

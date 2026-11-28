@@ -30,7 +30,8 @@
   function tabsHtml() {
     var a = canImpact() ? '<button class="btn btn-ghost" type="button" data-tab="impact" aria-selected="'+(state.tab==='impact')+'">Bilan de l’impact</button>' : '';
     var b = canEvent() ? '<button class="btn btn-ghost" type="button" data-tab="event" aria-selected="'+(state.tab==='event')+'">Événement à venir</button>' : '';
-    return '<div class="gestion-tabs" role="tablist">'+a+b+'</div>';
+    var c = canEvent() ? '<button class="btn btn-ghost" type="button" data-tab="photos" aria-selected="'+(state.tab==='photos')+'">Photos du site</button>' : '';
+    return '<div class="gestion-tabs" role="tablist">'+a+b+c+'</div>';
   }
   function impactHtml() {
     var r=state.reports, totals=r.reduce(function(t,x){
@@ -40,8 +41,7 @@
     var history=r.length ? r.map(function(x){
       return '<article class="gestion-report"><div><strong>'+esc(fmtDate(x.date))+'</strong><p>'+n(x.maraudes_count==null?1:x.maraudes_count)+' maraude(s) · '+n(x.kibble_kg)+' kg de croquettes · '+n(x.leashes)+' laisses · '+n(x.harnesses)+' harnais · '+n(x.toys)+' jouets'+'</p></div><button class="btn btn-ghost btn-sm" type="button" data-edit="'+esc(x.id)+'">Corriger</button></article>';
     }).join('') : '<div class="gestion-empty">Aucun bilan enregistré pour '+state.year+'. Ajoute le premier bilan ci-dessous.</div>';
-    var diag='<p class="gestion-help" id="impact-diag" style="background:#f3f4f6;border-radius:8px;padding:8px 12px">Diagnostic : mode <strong>'+esc(B.mode)+'</strong> · rôle <strong>'+esc(role())+'</strong> · '+r.length+' bilan(s) lu(s) en base pour '+state.year+(state.lastSave?' · dernier enregistrement : <strong>'+esc(state.lastSave)+'</strong>':'')+'</p>';
-    return diag+'<section class="gestion-panel"><h2>Bilan de l’impact</h2><p class="gestion-help">Les totaux additionnent les bilans enregistrés pour l’année choisie. Chaque maraude doit avoir sa propre ligne.</p>'+
+    return '<section class="gestion-panel"><h2>Bilan de l’impact</h2><p class="gestion-help">Les totaux additionnent les bilans enregistrés pour l’année choisie. Chaque maraude doit avoir sa propre ligne.</p>'+
       '<div class="gestion-grid"><label>Année affichée<select id="impact-year">'+Array.from({length:8},function(_,i){return new Date().getFullYear()+1-i;}).map(function(y){return '<option value="'+y+'" '+(y===Number(state.year)?'selected':'')+'>'+y+'</option>';}).join('')+'</select></label>'+
       '<div><strong>Totaux enregistrés en '+state.year+'</strong><p class="gestion-help">'+n(totals.maraudes)+' maraudes · '+n(totals.kg)+' kg · '+n(totals.leashes)+' laisses · '+n(totals.harnesses)+' harnais · '+n(totals.toys)+' jouets</p></div></div></section>'+
       '<section class="gestion-panel"><h2>'+(edit.id?'Corriger un bilan':'Ajouter le bilan d’une maraude')+'</h2>'+
@@ -53,6 +53,20 @@
       '<label>Jouets distribués<input type="number" name="toys" min="0" step="1" value="'+esc(edit.toys==null?'0':edit.toys)+'" required></label></div>'+
       '<div class="gestion-actions"><button class="btn" type="submit">'+(edit.id?'Enregistrer la correction':'Ajouter ce bilan')+'</button>'+(edit.id?'<button class="btn btn-ghost" type="button" data-cancel-edit>Annuler</button>':'')+'</div><p class="gestion-status" id="impact-status" role="status"></p></form></section>'+
       '<section class="gestion-panel"><h2>Historique des maraudes — '+state.year+'</h2><div class="gestion-list">'+history+'</div></section>';
+  }
+  function photosHtml() {
+    var map=CM.photoMap();
+    var items=CM.photoSlots.map(function(s,i){
+      var changed=!!map[s.src], cur=map[s.src]||s.src;
+      return '<article class="photo-admin-item"><div class="photo-admin-thumb"><span>Photo à ajouter</span><img src="'+esc(cur)+'" alt="" loading="lazy" onerror="this.remove()"></div>'+
+        '<div class="photo-admin-info"><strong>'+esc(s.label)+'</strong>'+
+        '<p class="gestion-help">'+(changed?'Photo remplacée depuis le site.':'Photo d’origine : '+esc(s.src))+'</p>'+
+        '<div class="gestion-actions"><label class="btn btn-ghost btn-sm photo-admin-pick">Choisir une nouvelle photo<input type="file" accept="image/*" data-photo-src="'+i+'" hidden></label>'+
+        (changed?'<button class="btn btn-ghost btn-sm" type="button" data-photo-reset="'+i+'">Rétablir l’original</button>':'')+'</div>'+
+        '<p class="gestion-status" data-photo-status="'+i+'" role="status"></p></div></article>';
+    }).join('');
+    return '<section class="gestion-panel"><h2>Photos du site</h2><p class="gestion-help">Remplace n’importe quelle photo du site : choisis un fichier, il est réduit puis publié tout de suite sur toutes les pages. « Rétablir l’original » ramène la photo prévue dans le code. Les photos des maraudes publiées par le photographe se gèrent depuis la page Maraudes.</p>'+
+      '<div class="photo-admin-grid">'+(items||'<div class="gestion-empty">Aucune photo trouvée dans le contenu du site.</div>')+'</div></section>';
   }
   function eventHtml() {
     var e=state.event||{}, photo=e.photo_url||state.photo;
@@ -69,16 +83,36 @@
     if (!u || !canEvent()) return renderDenied();
     if (!canImpact() && state.tab==='impact') state.tab='event';
     root.innerHTML='<div class="gestion-shell"><div class="gestion-intro"><p>Connecté : <strong>'+esc(u.name)+'</strong> · '+esc(CM.ROLE_LABEL[u.role]||'')+'</p><p class="gestion-help">Les outils sont séparés par onglet pour garder cet espace clair et facile à utiliser.</p></div>'+
-      tabsHtml()+(state.tab==='impact'&&canImpact()?impactHtml():eventHtml())+'</div>';
+      tabsHtml()+(state.tab==='impact'&&canImpact()?impactHtml():(state.tab==='photos'?photosHtml():eventHtml()))+'</div>';
   }
   async function refreshImpact() { state.reports=await B.listImpactReports(state.year); render(); }
   root.addEventListener('click',async function(ev){
+    var rs=ev.target.closest('[data-photo-reset]');
+    if(rs){
+      var slot=CM.photoSlots[Number(rs.dataset.photoReset)]; rs.disabled=true;
+      try{await B.resetSitePhoto(slot.src); await CM.refreshPhotos(); CM.toast('Photo d’origine rétablie.'); render();}
+      catch(e){rs.disabled=false; alert('Impossible de rétablir la photo :\n'+e.message); console.error(e);}
+      return;
+    }
     var t=ev.target.closest('[data-tab],[data-edit],[data-cancel-edit]'); if(!t)return;
     if(t.dataset.tab){state.tab=t.dataset.tab;state.edit=null;render();}
     if(t.dataset.cancelEdit!==undefined){state.edit=null;render();}
     if(t.dataset.edit){state.edit=state.reports.find(function(x){return x.id===t.dataset.edit;})||null;render();window.scrollTo({top:0,behavior:'smooth'});}
   });
   root.addEventListener('change',async function(ev){
+    var pi=ev.target.closest&&ev.target.closest('[data-photo-src]');
+    if(pi){
+      var file=pi.files[0]; if(!file)return;
+      var idx=pi.dataset.photoSrc, slot=CM.photoSlots[Number(idx)], st=root.querySelector('[data-photo-status="'+idx+'"]');
+      try{
+        st.textContent='Envoi de la photo…';
+        var url=await B.uploadSitePhoto(file,'site');
+        await B.saveSitePhoto(slot.src,url);
+        await CM.refreshPhotos();
+        CM.toast('Photo remplacée sur le site.'); render();
+      }catch(e){st.innerHTML='<strong style="color:#b00020">Échec : '+esc(e.message)+'</strong>'; alert('La photo n’a PAS été remplacée :\n'+e.message); console.error(e);}
+      return;
+    }
     if(ev.target.id==='impact-year'){state.year=Number(ev.target.value);state.edit=null;try{await refreshImpact();}catch(e){CM.toast(e.message);}}
   });
   root.addEventListener('submit',async function(ev){
